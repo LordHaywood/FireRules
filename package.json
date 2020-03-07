@@ -1,0 +1,30 @@
+{
+  "name": "firerules",
+  "version": "1.0.0",
+  "description": "A standard JSON config to automate interactions with Google Cloud Platform (Firebase)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "eslint": "^6.8.0",
+    "jest": "^25.1.0",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^13.9.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HaywoodSolutions/FireRules.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HaywoodSolutions/FireRules/issues"
+  },
+  "homepage": "https://github.com/HaywoodSolutions/FireRules#readme"
+}
