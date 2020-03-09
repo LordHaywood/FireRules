@@ -1,11 +1,8 @@
+type FieldConfigBase = {
+	required?: boolean
+}
 
-/**
- *  boolean, number, string, geo point, binary blob, and timestamp. You can also use arrays or nested objects
- */
-
-export type FieldConfig = StringConfig | BooleanConfig | ObjectConfig | NumberConfig | TimestampConfig | ArrayConfig;
-
-export type StringConfig = {
+type StringBaseConfig = {
 	type: "string",
 	min?: number,
 	max?: number,
@@ -15,39 +12,43 @@ export type StringConfig = {
 	} | {
 		type: "email"
 	},
-	enum?: string[],
-	required?: boolean
+	enum?: string[]
 };
 
-export type BooleanConfig = {
-	type: "boolean",
-	required?: boolean
+type BooleanBaseConfig = {
+	type: "boolean"
 };
 
-export type NumberConfig = {
+type NumberBaseConfig = {
 	type: "number",
 	min?: number,
 	max?: number,
-	enum?: number[],
-	required?: boolean
+	enum?: number[]
 };
 
-export type TimestampConfig = {
-	type: "timestamp",
-	required?: boolean
+export type TimestampBaseConfig = {
+	type: "timestamp"
 };
 
-export type ObjectConfig = {
+export type ObjectBaseConfig = {
 	type: "object",
-	fields: FieldsConfig,
-	required?: boolean
+	fields: FieldsConfig
 };
 
-export type ArrayConfig = {
+export type ArrayBaseConfig = {
 	type: "array",
-	valueType: StringConfig | BooleanConfig | ObjectConfig | NumberConfig | TimestampConfig,
-	required?: boolean
+	valueType: ArrayFieldConfig
 };
+
+export type StringConfig = FieldConfigBase & StringBaseConfig;
+export type BooleanConfig = FieldConfigBase & BooleanBaseConfig;
+export type NumberConfig = FieldConfigBase & NumberBaseConfig;
+export type TimestampConfig = FieldConfigBase & TimestampBaseConfig;
+export type ObjectConfig = FieldConfigBase & ObjectBaseConfig;
+export type ArrayConfig = FieldConfigBase & ArrayBaseConfig;
+
+export type ArrayFieldConfig =  StringBaseConfig | BooleanBaseConfig | NumberBaseConfig | TimestampBaseConfig | ObjectBaseConfig;
+export type FieldConfig = StringConfig | BooleanConfig | ObjectConfig | NumberConfig | TimestampConfig | ArrayConfig;
 
 export type FieldsConfig = {
 	[fieldId: string]: FieldConfig

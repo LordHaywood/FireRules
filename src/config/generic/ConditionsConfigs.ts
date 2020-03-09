@@ -1,4 +1,5 @@
-type FieldIdentifier = ["param"|"data"|"prevData"|"postData"|"param", string] | ["externalDocData", string, string];
+type FieldIdentifier = ["data"|"prevData"|"postData", string] | ["externalDocData", string[], string]|["param", string];
+
 export type FieldExtractor = FieldIdentifier|string|number;
 
 export type Condition = {

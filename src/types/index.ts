@@ -1,4 +1,4 @@
-import { TreeStructure } from "../walker/TreeStructure";
+import { TreeStructure, TreeElement, TreeArrayElement } from "../walker/TreeStructure";
 import Config, { DocumentConfig } from "../config/generic/MainConfig";
 import Walker from "../walker";
 
@@ -6,9 +6,8 @@ type TypesStructure = {
 	[name: string]: TreeStructure
 };
 
-const ProccessTypes = (globalConfig: Config): TypesStructure => {
-	const typeStructure: TypesStructure = {};
-	Object.values(globalConfig).forEach((config: DocumentConfig) => {
+const ProccessTypes = (globalConfig: Config): TypesStructure =>
+	Object.values(globalConfig).reduce((typeStructure: TypesStructure, config: DocumentConfig) => {
 		if (config.canCreate)
 			Walker(config, config.canCreate, (level: number, _, fields: TreeStructure): void => {
 				if (level == 0)
@@ -24,9 +23,8 @@ const ProccessTypes = (globalConfig: Config): TypesStructure => {
 				if (level == 0)
 					typeStructure[`${config.id.replace(/ /g, '')}`] = fields;
 			});
-	}, ``);
-	return typeStructure;
-};
+		return typeStructure;
+	}, {});
 
 const ProcessTypes = (globalConfig: Config): string => {
 	const typesStructure: TypesStructure = ProccessTypes(globalConfig);
@@ -36,15 +34,28 @@ const ProcessTypes = (globalConfig: Config): string => {
 	).join('\n');
 };
 
-const ProcessFields = (tree: TreeStructure, depth: number = 1): string => {
-	const list: string[] = Object.keys(tree).sort().map(fieldId => {
-		const field = tree[fieldId];
-		if (field.type == "object")
-			return `${fieldId}${field.required ? '' : '?'}: ${ProcessFields(field.map, depth + 1)}`;
-		return `${fieldId}${field.required ? '' : '?'}: ${field.type}`;
-	});
+export const ProcessArrayField = (field: TreeArrayElement, depth: number = 1): string =>
+	(field.type == "object") ? ProcessFields(field.map, depth + 1) :
+		(field.type == "timestamp") ? field.type = "number" : field.type;
 
-	return `{\n${`	`.repeat(depth)}${list.join(',\n' + `	`.repeat(depth))}\n${`	`.repeat(depth - 1)}}`;
+export const ProcessField = (field: TreeElement, depth: number = 1, fieldId: string|null = null): string => {
+	const start: string = fieldId != null ? `${fieldId}${field.required ? '' : '?'}: `: '';
+
+	if (field.type == "object")
+		return `${start}${ProcessFields(field.map, depth + 1)}`;
+	else if (field.type == "array")
+		return `${start}${ProcessArrayField(field.valueType, depth)}[]`;
+	else if (field.type == "timestamp")
+		field.type = "number";
+	return `${start}${field.type}`;
+};
+
+export const ProcessFields = (tree: TreeStructure, depth: number = 1): string => {
+	const list: string[] = Object.keys(tree).sort().map(fieldId =>
+		ProcessField(tree[fieldId], depth, fieldId)
+	);
+
+	return `{${list.length > 0 ? '\n' + `	`.repeat(depth) : ''}${list.join(',\n' + `	`.repeat(depth))}${list.length > 0 ? '\n' + `	`.repeat(depth - 1) : ''}}`;
 };
 
 export default ProcessTypes;
