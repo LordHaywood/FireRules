@@ -1,4 +1,4 @@
-import { Conditions } from './ConditionsConfigs'; 
+import Conditions from './ConditionsConfigs'; 
 
 export type OnEventConfig = {
 	fields?: string[],
