@@ -36,35 +36,41 @@ export const RenderFields = (cond: SingleCondition): string => {
     case 3:
       if (cond[1] == "==" || cond[1] == "!==" || cond[1] == "<" || cond[1] == ">" || cond[1] == "<=" || cond[1] == ">=") {
         if (Array.isArray(cond[2]) && cond[2][0] == "param")
-          return `${RenderField(cond[0])} ${cond[1]} ${`"${cond[2][1]}"`}`;
+          return `${RenderField(cond[0])} ${cond[1]} ${cond[2][1]}`;
         else
           return `${RenderField(cond[0])} ${cond[1]} ${typeof cond[2] == "number" ? cond[2] : `"${cond[2]}"`}`;
       }
       if (cond[1] == "in")
         return `${RenderField(cond[0])} in ${RenderFieldList(cond[2])}`;
       if (cond[1] == "hasAll")
-        return `${RenderField(cond[0])}.hasAll(${RenderFieldList(cond[2])})`;
+        return `${RenderField(cond[0])}.set().hasAll(${RenderFieldList(cond[2])})`;
       if (cond[1] == "hasAny")
-        return `${RenderField(cond[0])}.hasAny(${RenderFieldList(cond[2])})`;
+        return `${RenderField(cond[0])}.set().hasAny(${RenderFieldList(cond[2])})`;
       if (cond[1] == "hasOnly")
-        return `${RenderField(cond[0])}.hasOnly(${RenderFieldList(cond[2])})`;
+        return `${RenderField(cond[0])}.set().hasOnly(${RenderFieldList(cond[2])})`;
     case 4:
-      if (cond[1] == "withinRequest")
-        return `(request.time.toMillis() - ${RenderField(cond[0])}.seconds() * 1000) < duration.value(${cond[3]}, ${cond[2] == "seconds" ? "s" : "m"})`;
+      if (cond[1] == "withinRequest") {
+        return `(request.time.toMillis() - ${RenderField(cond[0])}.seconds() * 1000) < duration.value(${cond[3]}, "${cond[2].charAt(0)}")`;
+      }
       if (cond[1] == "size") 
-        return `${RenderField(cond[0])}.size() ${cond[1]} ${cond[2]}`;
+        return `${RenderField(cond[0])}.size() ${cond[2]} ${cond[3]}`;
       if (cond[1] == "keys" || cond[1] == "values")
         return `${RenderField(cond[0])}.${cond[1]}().${cond[2]}(${RenderFieldList(cond[3])})`;
     case 5:
       if (cond[1] == "distanceTo") {
-        if (Array.isArray(cond[2]) && cond[2].length == 2)
-          return `${RenderField(cond[0])}.distance(latlng.value(${cond[2][0]}, ${cond[2][1]})) ${cond[3]} ${cond[4]}`;
-        return `${RenderField(cond[0])}.distance(${RenderField(cond[2])}) ${cond[3]} ${cond[4]}`;
+        let field = cond[2];
+        if (field[0] == "latlng")
+          return `${RenderField(cond[0])}.distance(latlng.value(${field[1]}, ${field[2]})) ${cond[3]} ${cond[4]}`;
+        else 
+          return `${RenderField(cond[0])}.distance(${RenderField(field)}) ${cond[3]} ${cond[4]}`;
       }
-      if (cond[1] == "get")
-        return `${RenderField(cond[0])}["${cond[2]}"] ${cond[3]} ${typeof cond[4] == "number" ? cond[4] : `"${cond[4]}"`}`;
+      if (cond[1] == "get") {
+        if (typeof cond[2] == "number")
+          return `${RenderField(cond[0])}[${cond[2]}] ${cond[3]} ${typeof cond[4] == "number" ? cond[4] : `"${cond[4]}"`}`;
+        return `${RenderField(cond[0])}${Array.isArray(cond[2]) ? `[${cond[2][1]}]` : `.${cond[2]}`} ${cond[3]} ${typeof cond[4] == "number" ? cond[4] : `"${cond[4]}"`}`;
+      }
       if (cond[1] == "diff")
-        return `${RenderField(cond[0])}["${cond[2]}"] ${cond[3]} ${typeof cond[4] == "number" ? cond[4] : `"${cond[4]}"`}`;
+        return `${RenderField(cond[0])}["${cond[2]}"] ${cond[3]} ${typeof cond[4] == "number" ? cond[4] : `"${cond[4]}"`}`; // TODO
   }
   return "";
 };

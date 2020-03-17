@@ -10,7 +10,7 @@ export type Boolean =
 Field;
 
 export type Timestamp = 
-  [Field, "withinRequest", "seconds"|"minutes", number];
+  [Field, "withinRequest", "seconds"|"minutes"|"hours"|"days", number];
 
 export type Number = 
   [Field, "=="|"!=="|"<"|">"|"<="|">=", number] |
@@ -19,24 +19,23 @@ export type Number =
   [Field, "isFloat"];
 
 export type String = 
-  [Field, "==", ParamIdentifier] |
-  [Field, "=="|"!==", string] |
+  [Field, "=="|"!==", string|ParamIdentifier] |
   [Field, "size", "=="|"!=="|"<"|">"|"<="|">=", number] |
   [Field, "in", string[]];
 
 export type LatLng = 
-  [Field, "distanceTo", [number, number]|Field, "=="|"!=="|"<"|">"|"<="|">=", number];
+  [Field, "distanceTo", ["latlng", number, number]|Field, "=="|"!=="|"<"|">"|"<="|">=", number];
 
 export type Map = 
   [Field, "size", "=="|"!=="|"<"|">"|"<="|">=", number] |
-  [Field, "get", string, "=="|"!=="|"<"|">"|"<="|">=", number|string] |
+  [Field, "get", string|["param", string], "=="|"!=="|"<"|">"|"<="|">=", number|string] |
   [Field, "keys", "hasAll"|"hasAny"|"hasOnly", string[]] |
   [Field, "values", "hasAll"|"hasAny"|"hasOnly", (string|number)[]] |
   [Field, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];
 
 export type List =
   [Field, "size", "=="|"!=="|"<"|">"|"<="|">=", number] |
-  [Field, "get", string, "=="|"!=="|"<"|">"|"<="|">=", number|string] |
+  [Field, "get", number, "=="|"!=="|"<"|">"|"<="|">=", number|string] |
   [Field, "hasAll", (string|number)[]] |
   [Field, "hasAny", (string|number)[]] |
   [Field, "hasOnly", (string|number)[]];
