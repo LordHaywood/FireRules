@@ -76,9 +76,18 @@ export const RenderFields = (cond: SingleCondition): string => {
 };
 
 export const RenderFieldGroup = (group: ConditionGroup): string => {
-  return group.conditions.map(cond => {
-    if (!Array.isArray(cond))
-      return RenderFieldGroup(cond);
-    return RenderFields(cond);
-  }).join(group.operation);
-}
+  switch (group.conditions.length) {
+    case 0:
+      return "true";
+    case 1:
+      if (!Array.isArray(group.conditions[0]))
+        return RenderFieldGroup(group.conditions[0]);
+      return RenderFields(group.conditions[0]);
+    default:
+      return "( " + group.conditions.map(cond => {
+        if (!Array.isArray(cond))
+          return RenderFieldGroup(cond);
+        return RenderFields(cond);
+      }).join(` ${group.operation} `) + " )";
+  }
+};

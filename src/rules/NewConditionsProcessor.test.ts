@@ -1,4 +1,4 @@
-import { RenderInteralFieldPath, RenderFieldList, RenderDocFieldPath, RenderField, RenderFields } from "./NewConditionsProcessor";
+import { RenderInteralFieldPath, RenderFieldList, RenderDocFieldPath, RenderField, RenderFields, RenderFieldGroup } from "./NewConditionsProcessor";
 
 describe("RenderInteralFieldPath", () => {
   test("without params", () => {
@@ -419,3 +419,61 @@ describe("List", () => {
 //   operation: "&&"|"||",
 //   conditions: (SingleCondition|ConditionGroup)[]
 // };
+
+describe("ConditionGroup", () => {
+  test("&&", () => {
+    expect(
+      RenderFieldGroup({
+        operation: "&&",
+        conditions: []
+      })
+    ).toBe(`true`);
+
+    expect(
+      RenderFieldGroup({
+        operation: "&&",
+        conditions: [
+          ["field", ["users", "userABC"]]
+        ]
+      })
+    ).toBe(`.users.userABC`);
+
+    expect(
+      RenderFieldGroup({
+        operation: "&&",
+        conditions: [
+          ["field", ["users", "userABC"]],
+          ["field", ["users", "userABC"]]
+        ]
+      })
+    ).toBe(`( .users.userABC && .users.userABC )`);
+  });
+
+  test("||", () => {
+    expect(
+      RenderFieldGroup({
+        operation: "||",
+        conditions: []
+      })
+    ).toBe(`true`);
+
+    expect(
+      RenderFieldGroup({
+        operation: "||",
+        conditions: [
+          ["field", ["users", "userABC"]]
+        ]
+      })
+    ).toBe(`.users.userABC`);
+
+    expect(
+      RenderFieldGroup({
+        operation: "||",
+        conditions: [
+          ["field", ["users", "userABC"]],
+          ["field", ["users", "userABC"]]
+        ]
+      })
+    ).toBe(`( .users.userABC || .users.userABC )`);
+  });
+});
