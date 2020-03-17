@@ -1,4 +1,5 @@
 # FireRules
+[![Build Status](https://travis-ci.org/HaywoodSolutions/FireRules.svg?branch=master)](https://travis-ci.org/HaywoodSolutions/FireRules)
 
 A standard JSON config to automate all systems except the high level UI. Generating and automaticly deploying to services of Google Cloud Platform (Firebase). So handle what data you need and FireRules will handle the rest, and help make development easy.
 
