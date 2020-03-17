@@ -3,6 +3,7 @@ import Walker from "../walker";
 import { TreeStructure } from "../walker/TreeStructure";
 import { FieldConfig } from "../config/generic/FieldConfigs";
 import ConditionGroup from "../config/generic/ConditionsConfigs";
+import { RenderFieldGroup } from "./NewConditionsProcessor";
 
 type LogConfig = {
 	[path: string]: {
@@ -13,13 +14,15 @@ type LogConfig = {
 	}
 };
 
+type SingleRenderedConfig = {
+  create?: string,
+  read?: string,
+  update?: string,
+  delete?: string
+};
+
 type RenderedConfig = {
-	[path: string]: {
-		create: string,
-		read: string,
-		update: string,
-		delete: string
-	}
+	[path: string]: SingleRenderedConfig
 };
 
 const NewProcessTypes = (globalConfig: Config): RenderedConfig => {
@@ -44,18 +47,20 @@ const NewProcessTypes = (globalConfig: Config): RenderedConfig => {
 				conditions: []	
 			}
 		};
-		const config = globalConfig[path];
+    const config = globalConfig[path];
+    renderedConfig[path] = {};
+
 		if (config.canCreate) {
 			Walker(config, config.canCreate, (_, fieldPath: string[], tree: TreeStructure) => {
-				// logConfig[path].create.conditions.push(ObjectHasAllKeysRule(fieldPath, tree));
+				logConfig[path].create.conditions.push([["field", fieldPath], "keys", "hasAll", Object.keys(tree)]);
 			}, (fieldPath: string[], fieldConfig: FieldConfig) => {
 				// logConfig[path].create.conditions.push(...FieldRules(fieldPath, fieldConfig));
 			});
-			// if (config.canCreate.conditions)
-      //   logConfig[path].create.conditions.push(HandleCondtions(config.canCreate.conditions, path));
+			if (config.canCreate.conditions)
+        logConfig[path].create.conditions.push(config.canCreate.conditions);
+        
+      renderedConfig[path].create = RenderFieldGroup(logConfig[path].create);
     }
-    
-    // renderedConfig[path].create = ReduceConditionGroups(logConfig[path].create, 2);
   });
   
 	return renderedConfig;
