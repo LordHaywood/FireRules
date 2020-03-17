@@ -2,11 +2,7 @@ import Config from "../config/generic/MainConfig";
 import Walker from "../walker";
 import { TreeStructure } from "../walker/TreeStructure";
 import { FieldConfig } from "../config/generic/FieldConfigs";
-import FieldRules from "./FieldRules";
-import ObjectHasAllKeysRule from "./ObjectHasAllKeysRule";
-import ConditionGroup from "./ConditionGroup";
-import ReduceConditionGroups from "./ReduceConditionGroups";
-import HandleCondtions from "./ConditionRules";
+import ConditionGroup from "../config/generic/ConditionsConfigs";
 
 type LogConfig = {
 	[path: string]: {
@@ -32,34 +28,34 @@ const NewProcessTypes = (globalConfig: Config): RenderedConfig => {
 	Object.keys(globalConfig).forEach(path => {
 		logConfig[path] = {
 			create: {
-				operator: "&&",
+				operation: "&&",
 				conditions: []	
 			},
 			read: {
-				operator: "&&",
+				operation: "&&",
 				conditions: []	
 			},
 			update: {
-				operator: "&&",
+				operation: "&&",
 				conditions: []	
 			},
 			delete: {
-				operator: "&&",
+				operation: "&&",
 				conditions: []	
 			}
 		};
 		const config = globalConfig[path];
 		if (config.canCreate) {
 			Walker(config, config.canCreate, (_, fieldPath: string[], tree: TreeStructure) => {
-				logConfig[path].create.conditions.push(ObjectHasAllKeysRule(fieldPath, tree));
+				// logConfig[path].create.conditions.push(ObjectHasAllKeysRule(fieldPath, tree));
 			}, (fieldPath: string[], fieldConfig: FieldConfig) => {
-				logConfig[path].create.conditions.push(...FieldRules(fieldPath, fieldConfig));
+				// logConfig[path].create.conditions.push(...FieldRules(fieldPath, fieldConfig));
 			});
-			if (config.canCreate.conditions)
-        logConfig[path].create.conditions.push(HandleCondtions(config.canCreate.conditions, path));
+			// if (config.canCreate.conditions)
+      //   logConfig[path].create.conditions.push(HandleCondtions(config.canCreate.conditions, path));
     }
     
-    renderedConfig[path].create = ReduceConditionGroups(logConfig[path].create, 2);
+    // renderedConfig[path].create = ReduceConditionGroups(logConfig[path].create, 2);
   });
   
 	return renderedConfig;

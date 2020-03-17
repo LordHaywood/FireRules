@@ -29,8 +29,6 @@ const RenderRules = (renderRules: RenderedConfig): string => {
     return output;
   }, []);
 
-  
-
   return [
     `rules_version = '2';\n`,
     `service cloud.firestore {\n`,
