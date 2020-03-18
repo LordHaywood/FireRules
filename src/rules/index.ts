@@ -3,7 +3,7 @@ import Walker from "../walker";
 import { TreeStructure } from "../walker/TreeStructure";
 import { FieldConfig } from "../config/generic/FieldConfigs";
 import ConditionGroup from "../config/generic/ConditionsConfigs";
-import { RenderFieldGroup } from "./NewConditionsProcessor";
+import { RenderFieldGroup } from "./ConditionsProcessor";
 
 type LogConfig = {
 	[path: string]: {
