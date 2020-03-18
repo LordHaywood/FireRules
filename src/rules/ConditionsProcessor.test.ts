@@ -1,4 +1,4 @@
-import { RenderInteralFieldPath, RenderFieldList, RenderDocFieldPath, RenderField, RenderFields, RenderFieldGroup } from "./NewConditionsProcessor";
+import { RenderInteralFieldPath, RenderFieldList, RenderDocFieldPath, RenderField, RenderFields, RenderFieldGroup } from "./ConditionsProcessor";
 
 describe("RenderInteralFieldPath", () => {
   test("without params", () => {
