@@ -58,7 +58,7 @@ const NewProcessTypes = (globalConfig: Config): RenderedConfig => {
 			});
 			if (config.canCreate.conditions)
         logConfig[path].create.conditions.push(config.canCreate.conditions);
-        
+      
       renderedConfig[path].create = RenderFieldGroup(logConfig[path].create);
     }
   });
