@@ -35,7 +35,7 @@ export const RenderField = (fieldPath: Field): string => {
 };
 
 export const RenderFields = (cond: SingleCondition): string => {
-  if (cond[0] == "field" || cond[0] == "doc")
+  if (cond[0] == "field" || cond[0] == "updateField" || cond[0] == "doc")
     return RenderField(cond);
   switch (cond.length) {
     case 2:
