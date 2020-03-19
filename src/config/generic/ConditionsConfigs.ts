@@ -32,7 +32,7 @@ export type Map =
   [Field, "get", string|["param", string], "=="|"!=="|"<"|">"|"<="|">=", number|string] |
   [Field, "keys", "hasAll"|"hasAny"|"hasOnly", string[]] |
   [Field, "values", "hasAll"|"hasAny"|"hasOnly", (string|number)[]] |
-  [Field, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];
+  [FieldPath, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];
 
 export type List =
   [Field, "size", "=="|"!=="|"<"|">"|"<="|">=", number] |
