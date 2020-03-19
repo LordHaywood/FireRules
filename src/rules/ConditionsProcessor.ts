@@ -1,7 +1,15 @@
-import ConditionGroup, { SingleCondition, FieldPath, ExternalDocFieldPath, Field } from "../config/generic/ConditionsConfigs";
+import ConditionGroup, { SingleCondition, FieldPath, ExternalDocFieldPath, Field, UpdateFieldPath } from "../config/generic/ConditionsConfigs";
 
 export const RenderInteralFieldPath = (fieldPath: FieldPath): string => {
-  return fieldPath[1].reduce((out: string, v): string => {
+  return "resource.data" + RenderFieldPath(fieldPath[1]);
+}
+
+export const RenderInteralUpdateFieldPath = (fieldPath: UpdateFieldPath): string => {
+  return "request.resource.data" + RenderFieldPath(fieldPath[1]);
+}
+
+export const RenderFieldPath = (path: (string|["param", string])[]): string => {
+  return path.reduce((out: string, v): string => {
     if (Array.isArray(v) && v[0] == "param")
       out += `[${v[1]}]`;
     else
@@ -11,7 +19,7 @@ export const RenderInteralFieldPath = (fieldPath: FieldPath): string => {
 }
 
 export const RenderDocFieldPath = (docFieldPath: ExternalDocFieldPath): string => {
-  return `get(/databases/$(database)/documents/${docFieldPath[1].map(v => Array.isArray(v) && v[0] == "param" ? `$(${v[1]})`: v).join('/')}).data${RenderInteralFieldPath(docFieldPath[2])}`;
+  return `get(/databases/$(database)/documents/${docFieldPath[1].map(v => Array.isArray(v) && v[0] == "param" ? `$(${v[1]})`: v).join('/')}).data${RenderFieldPath(docFieldPath[2][1])}`;
 };
 
 export const RenderFieldList = (list: (number|string)[]): string => {
@@ -21,6 +29,8 @@ export const RenderFieldList = (list: (number|string)[]): string => {
 export const RenderField = (fieldPath: Field): string => {
   if (fieldPath[0] == "doc")
     return RenderDocFieldPath(fieldPath);
+  if (fieldPath[0] == "updateField")
+    return RenderInteralUpdateFieldPath(fieldPath);
   return RenderInteralFieldPath(fieldPath);
 };
 
@@ -84,7 +94,7 @@ export const RenderFieldGroup = (group: ConditionGroup): string => {
         return RenderFieldGroup(group.conditions[0]);
       return RenderFields(group.conditions[0]);
     default:
-      return "( " + group.conditions.map(cond => {
+      return "( " + group.conditions.map((cond: SingleCondition): string => {
         if (!Array.isArray(cond))
           return RenderFieldGroup(cond);
         return RenderFields(cond);

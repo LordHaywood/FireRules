@@ -3,8 +3,9 @@ export type ParamIdentifier = ["param", string];
 
 export type ExternalDocFieldPath = ["doc", (string|["param", string])[], FieldPath];
 export type FieldPath = ["field", (string|["param", string])[]];
+export type UpdateFieldPath = ["updateField", (string|["param", string])[]];
 
-export type Field = ExternalDocFieldPath | FieldPath;
+export type Field = ExternalDocFieldPath | FieldPath | UpdateFieldPath;
 
 export type Boolean = 
 Field;
@@ -44,7 +45,7 @@ export type SingleCondition = Boolean | Timestamp | Number | String | LatLng | M
 
 export type ConditionGroup = {
   operation: "&&"|"||",
-  conditions: (SingleCondition|ConditionGroup)[]
+  conditions: SingleCondition[]
 };
 
 export default ConditionGroup;
