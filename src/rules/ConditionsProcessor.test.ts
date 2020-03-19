@@ -430,30 +430,64 @@ describe("conditions.Map", () => {
     });
   });
 
-  // describe("diff", () => {
-  //   describe("addedKeys", () => {
-  //     test("hasAll", () => {
-  //       expect(RenderFields([["field", ["map", "id"]], "diff", "addedKeys", "hasAll", ["abc"]])).toBe(`resource.data.map.id.values().hasAll([\"abc\",\"efg\"])`);
-  //       expect(RenderFields([["updateField", ["map", "id"]], "diff", "addedKeys", "hasAll", ["abc"]])).toBe(`request.resource.data.map.id.values().hasAll([\"abc\",\"efg\"])`);
-  //     });
+  describe("diff", () => {
+    describe("addedKeys", () => {
+      test("hasAll", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "addedKeys", "hasAll", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).addedKeys().hasAll(["abc","efg"])`);
+      });
 
-  //     test("hasAny", () => {
-  //       expect(RenderFields([["field", ["map", "id"]], "diff", "addedKeys", "hasAny", ["abc"]])).toBe(`resource.data.map.id.values().hasAll(["abc","efg"])`);
-  //       expect(RenderFields([["updateField", ["map", "id"]], "diff", "addedKeys", "hasAny", ["abc"]])).toBe(`request.resource.data.map.id.values().hasAll(["abc","efg"])`);
-  //     });
+      test("hasAny", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "addedKeys", "hasAny", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).addedKeys().hasAny(["abc","efg"])`);
+      });
 
-  //     test("hasOnly", () => {
-  //       expect(RenderFields([["field", ["map", "id"]], "diff", "addedKeys", "hasOnly", ["abc"]])).toBe(`resource.data.map.id.values().hasAll(["abc","efg"])`);
-  //       expect(RenderFields([["updateField", ["map", "id"]], "diff", "addedKeys", "hasOnly", ["abc"]])).toBe(`request.resource.data.map.id.values().hasAll(["abc","efg"])`);
-  //     });
-  //   });
-  // });
+      test("hasOnly", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "addedKeys", "hasOnly", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).addedKeys().hasOnly(["abc","efg"])`);
+      });
+    });
+
+    describe("effectedKeys", () => {
+      test("hasAll", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "effectedKeys", "hasAll", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).effectedKeys().hasAll(["abc","efg"])`);
+      });
+
+      test("hasAny", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "effectedKeys", "hasAny", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).effectedKeys().hasAny(["abc","efg"])`);
+      });
+
+      test("hasOnly", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "effectedKeys", "hasOnly", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).effectedKeys().hasOnly(["abc","efg"])`);
+      });
+    });
+    
+    describe("changedKeys", () => {
+      test("hasAll", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "changedKeys", "hasAll", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).changedKeys().hasAll(["abc","efg"])`);
+      });
+
+      test("hasAny", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "changedKeys", "hasAny", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).changedKeys().hasAny(["abc","efg"])`);
+      });
+
+      test("hasOnly", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "changedKeys", "hasOnly", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).changedKeys().hasOnly(["abc","efg"])`);
+      });
+    });
+    
+    describe("unchangedKeys", () => {
+      test("hasAll", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "unchangedKeys", "hasAll", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).unchangedKeys().hasAll(["abc","efg"])`);
+      });
+
+      test("hasAny", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "unchangedKeys", "hasAny", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).unchangedKeys().hasAny(["abc","efg"])`);
+      });
+
+      test("hasOnly", () => {
+        expect(RenderFields([["field", ["map", "id"]], "diff", "unchangedKeys", "hasOnly", ["abc","efg"]])).toBe(`resource.data.map.id.diff(request.resource.data.map.id).unchangedKeys().hasOnly(["abc","efg"])`);
+      });
+    });
+  });
 });
-
-// export type Map =
-//   [Field, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];
-
-
 
 describe("List", () => {
   describe("size", () => {

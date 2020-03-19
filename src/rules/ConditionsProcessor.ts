@@ -80,7 +80,7 @@ export const RenderFields = (cond: SingleCondition): string => {
         return `${RenderField(cond[0])}${Array.isArray(cond[2]) ? `[${cond[2][1]}]` : `.${cond[2]}`} ${cond[3]} ${typeof cond[4] == "number" ? cond[4] : `"${cond[4]}"`}`;
       }
       if (cond[1] == "diff")
-        return `${RenderField(cond[0])}["${cond[2]}"] ${cond[3]} ${typeof cond[4] == "number" ? cond[4] : `"${cond[4]}"`}`; // TODO
+        return `${RenderField(cond[0])}.${cond[1]}(${RenderField(["updateField", cond[0][1]])}).${cond[2]}().${cond[3]}(${RenderFieldList(cond[4])})`;
   }
   return "";
 };
