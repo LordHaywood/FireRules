@@ -28,5 +28,9 @@
   "bugs": {
     "url": "https://github.com/HaywoodSolutions/FireRules/issues"
   },
-  "homepage": "https://github.com/HaywoodSolutions/FireRules#readme"
+  "homepage": "https://github.com/HaywoodSolutions/FireRules#readme",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  }
 }
