@@ -57,7 +57,7 @@ describe("Walker", () => {
       });
     });
     
-    const objectTypes: {
+    const arrayTypes: {
       type: "array", 
       format: ArrayFieldConfig,
       expected: TreeArrayElement
@@ -111,7 +111,7 @@ describe("Walker", () => {
       }
     ];
 
-    objectTypes.forEach(v => {
+    arrayTypes.forEach(v => {
       describe(v.type + " " + v.format.type, () => {
         [true, false].forEach(required => {
           test(required ? "Required" : "Optional", () => {
@@ -154,6 +154,7 @@ describe("Walker", () => {
         });
       });
     });
+    
   });
 });
 
