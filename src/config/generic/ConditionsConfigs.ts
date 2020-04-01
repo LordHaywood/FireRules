@@ -1,11 +1,13 @@
+export type FieldId = Array<string|number|["param", string]>;
+export type DocumentId = Array<string|["param", string]>;
+
 export type NewFieldIdentifier<DataType> = ["data"|"prevData"|"postData", DataType, string] | ["externalDocData", string[], DataType, string];
 export type ParamIdentifier = ["param", string];
 
-export type ExternalDocFieldPath = ["doc", (string|["param", string])[], FieldPath];
-export type FieldPath = ["field", (string|["param", string])[]];
-export type UpdateFieldPath = ["updateField", (string|["param", string])[]];
+export type ExternalDocFieldPath = ["doc", DocumentId, FieldId];
+export type UpdateFieldPath = ["updateField", FieldId];
 
-export type Field = ExternalDocFieldPath | FieldPath | UpdateFieldPath;
+export type Field = ExternalDocFieldPath | FieldId | UpdateFieldPath;
 
 export type Boolean = 
 Field;
@@ -29,10 +31,10 @@ export type LatLng =
 
 export type Map = 
   [Field, "size", "=="|"!=="|"<"|">"|"<="|">=", number] |
-  [Field, "get", string|["param", string], "=="|"!=="|"<"|">"|"<="|">=", number|string] |
+  [Field, "get", string, "=="|"!=="|"<"|">"|"<="|">=", number|string] |
   [Field, "keys", "hasAll"|"hasAny"|"hasOnly", string[]] |
   [Field, "values", "hasAll"|"hasAny"|"hasOnly", (string|number)[]] |
-  [FieldPath, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];
+  [Field, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];
 
 export type List =
   [Field, "size", "=="|"!=="|"<"|">"|"<="|">=", number] |

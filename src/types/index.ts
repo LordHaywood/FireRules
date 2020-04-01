@@ -1,56 +1,55 @@
-import { TreeStructure, TreeElement, TreeArrayElement } from "../walker/TreeStructure";
 import Config, { DocumentConfig } from "../config/generic/MainConfig";
-import Walker from "../walker";
+import Walker from "../walker/Walker";
+import { FieldConfig, FieldsConfig } from "../config/generic/FieldConfigs";
+import { FieldId } from "../config/generic/ConditionsConfigs";
 
-type TypesStructure = {
-	[name: string]: TreeStructure
-};
+type FieldConfigMap = Record<string, FieldConfig>;
 
-const ProccessTypes = (globalConfig: Config): TypesStructure =>
-	Object.values(globalConfig).reduce((typeStructure: TypesStructure, config: DocumentConfig) => {
+const ProccessTypes = (globalConfig: Config): FieldConfigMap =>
+	Object.values(globalConfig).reduce((typeStructure: {[id: string]: FieldConfig}, config: DocumentConfig) => {
 		if (config.canCreate)
-			Walker(config, config.canCreate, (level: number, _, fields: TreeStructure): void => {
-				if (level == 0)
-					typeStructure[`Create${config.id.replace(/ /g, '')}`] = fields;
+			Walker(config, config.canCreate, (path: FieldId, fieldConfig: FieldConfig) => {
+				if (path.length == 0)
+					typeStructure[`Create${config.id.replace(/ /g, '')}`] = fieldConfig;
 			});
 		if (config.canEdit)
-			Walker(config, config.canEdit, (level: number, _, fields: TreeStructure): void => {
-				if (level == 0)
-					typeStructure[`Edit${config.id.replace(/ /g, '')}`] = fields;
+			Walker(config, config.canEdit, (path: FieldId, fieldConfig: FieldConfig) => {
+				if (path.length == 0)
+					typeStructure[`Edit${config.id.replace(/ /g, '')}`] = fieldConfig;
 			});
 		if (config.canRead)
-			Walker(config, config.canRead, (level: number, _, fields: TreeStructure): void => {
-				if (level == 0)
-					typeStructure[`${config.id.replace(/ /g, '')}`] = fields;
+			Walker(config, config.canRead, (path: FieldId, fieldConfig: FieldConfig) => {
+				if (path.length == 0)
+					typeStructure[`${config.id.replace(/ /g, '')}`] = fieldConfig;
 			});
 		return typeStructure;
 	}, {});
 
 const ProcessTypes = (globalConfig: Config): string => {
-	const typesStructure: TypesStructure = ProccessTypes(globalConfig);
+	const FieldConfigMap: FieldConfigMap = ProccessTypes(globalConfig);
 
-	return Object.keys(typesStructure).sort().map(id =>	
-		`export type ${id} = ${ProcessFields(typesStructure[id])};\n`
+	return Object.keys(FieldConfigMap).sort().map((id: string) =>	
+		`export type ${id} = ${ProcessField(FieldConfigMap[id])};\n`
 	).join('\n');
 };
 
-export const ProcessArrayField = (field: TreeArrayElement, depth: number = 1): string =>
-	(field.type == "object") ? ProcessFields(field.map, depth + 1) :
-		(field.type == "timestamp") ? field.type = "number" : field.type;
-
-export const ProcessField = (field: TreeElement, depth: number = 1, fieldId: string|null = null): string => {
+export const ProcessField = (field: FieldConfig, depth: number = 1, fieldId: string|null = null): string => {
 	const start: string = fieldId != null ? `${fieldId}${field.required ? '' : '?'}: `: '';
 
 	if (field.type == "object")
-		return `${start}${ProcessFields(field.map, depth + 1)}`;
+		return `${start}${ProcessFields(field.fields, depth + 1)}`;
 	else if (field.type == "array")
 		return `${start}${ProcessArrayField(field.valueType, depth)}[]`;
 	else if (field.type == "timestamp")
-		field.type = "number";
+		return `${start}${"number"}`;
 	return `${start}${field.type}`;
 };
 
-export const ProcessFields = (tree: TreeStructure, depth: number = 1): string => {
+export const ProcessArrayField = (field: FieldConfig, depth: number = 1): string =>
+	(field.type == "object") ? ProcessFields(field.fields, depth + 1) :
+		(field.type == "timestamp") ? "number" : field.type;
+
+export const ProcessFields = (tree: FieldsConfig, depth: number = 1): string => {
 	const list: string[] = Object.keys(tree).sort().map(fieldId =>
 		ProcessField(tree[fieldId], depth, fieldId)
 	);

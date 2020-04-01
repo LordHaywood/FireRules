@@ -40,6 +40,8 @@ export type ArrayBaseConfig = {
 	valueType: ArrayFieldConfig
 };
 
+export type BaseFieldConfig = StringBaseConfig | BooleanBaseConfig | NumberBaseConfig | TimestampBaseConfig | ObjectBaseConfig | ArrayBaseConfig;
+
 export type StringConfig = FieldConfigBase & StringBaseConfig;
 export type BooleanConfig = FieldConfigBase & BooleanBaseConfig;
 export type NumberConfig = FieldConfigBase & NumberBaseConfig;

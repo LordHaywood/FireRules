@@ -12,8 +12,8 @@ export const ExtractArrayFieldType = (fieldConfig: ArrayFieldConfig): TreeArrayE
 		type: fieldConfig.type
 	};
 
-export const ExtractFieldType = (fieldConfig: FieldConfig): TreeElement =>
-  (fieldConfig.type == 'object') ? {
+export const ExtractFieldType = (fieldConfig: FieldConfig): TreeElement => {
+  return (fieldConfig.type == 'object') ? {
 		type: fieldConfig.type,
 		map: ExtractObjectType(fieldConfig.fields),
 		required: fieldConfig.required || false
@@ -24,10 +24,12 @@ export const ExtractFieldType = (fieldConfig: FieldConfig): TreeElement =>
 	} :	{
 		type: fieldConfig.type,
 		required: fieldConfig.required || false
-	};
+  };
+}
 
-export const ExtractObjectType = (fieldsConfig: FieldsConfig): TreeStructure =>
-  Object.keys(fieldsConfig).sort().reduce((obj: TreeStructure, fieldId) => {
+export const ExtractObjectType = (fieldsConfig: FieldsConfig): TreeStructure => {
+  return Object.keys(fieldsConfig).sort().reduce((obj: TreeStructure, fieldId) => {
     obj[fieldId] = ExtractFieldType(fieldsConfig[fieldId]);
     return obj;
   }, {});
+}
