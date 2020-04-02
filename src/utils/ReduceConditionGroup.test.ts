@@ -7,7 +7,7 @@ describe("ReduceConditionGroup", () => {
       conditions: [
         {
           operator: "||",
-          conditions: ["abc", "cde"]
+          conditions: [["doc", ["abc"]], ["doc", ["efg"]]]
         }
       ]
     })).toEqual({
@@ -15,7 +15,7 @@ describe("ReduceConditionGroup", () => {
       conditions: [
         {
           operator: "||",
-          conditions: ["abc", "cde"]
+          conditions: [["doc", ["abc"]], ["doc", ["efg"]]]
         }
       ]
     });
@@ -27,14 +27,16 @@ describe("ReduceConditionGroup", () => {
       conditions: [
         {
           operator: "&&",
-          conditions: ["abc", "cde"]
+          conditions: [["doc", ["abc"]], ["doc", ["efg"]]]
         },
-        "hij"
+        ["doc", ["hij"]]
       ]
     })).toEqual({
       operator: "&&",
       conditions: [
-        "abc", "cde", "hij"
+        ["doc", ["abc"]],
+        ["doc", ["efg"]],
+        ["doc", ["hij"]]
       ]
     });
   });
@@ -45,14 +47,16 @@ describe("ReduceConditionGroup", () => {
       conditions: [
         {
           operator: "||",
-          conditions: ["abc", "cde"]
+          conditions: [["doc", ["abc"]], ["doc", ["efg"]]]
         },
-        "hij"
+        ["doc", ["hij"]]
       ]
     })).toEqual({
       operator: "||",
       conditions: [
-        "abc", "cde", "hij"
+        ["doc", ["abc"]],
+        ["doc", ["efg"]],
+        ["doc", ["hij"]]
       ]
     });
   });

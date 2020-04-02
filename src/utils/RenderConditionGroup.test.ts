@@ -1,4 +1,8 @@
 import RenderConditionGroup from "./RenderConditionGroup";
+import { SingleCondition } from "../config/generic/ConditionsConfigs";
+
+const rawCondition: SingleCondition = ["doc", ["abc"]];
+const processedCondition: string = "resource.data.abc";
 
 describe("RenderConditionGroup", () => {
   test("empty", () => {
@@ -17,63 +21,63 @@ describe("RenderConditionGroup", () => {
     expect(RenderConditionGroup({
       operator: "&&",
       conditions: [
-        "a == b"
+        rawCondition
       ]
-    })).toBe("a == b");
+    })).toEqual(processedCondition);
     
     expect(RenderConditionGroup({
       operator: "||",
       conditions: [
-        "b == c"
+        rawCondition
       ]
-    })).toBe("b == c");
+    })).toEqual(processedCondition);
   });
 
   test("multiple conditions", () => {
     expect(RenderConditionGroup({
       operator: "&&",
       conditions: [
-        "a == b",
-        "f == c"
+        rawCondition,
+        rawCondition
       ]
-    })).toBe("(\n\ta == b &&\n\tf == c\n)");
+    })).toBe(`(\n\t${processedCondition} &&\n\t${processedCondition}\n)`);
     
     expect(RenderConditionGroup({
       operator: "||",
       conditions: [
-        "b == c",
-        "e == j"
+        rawCondition,
+        rawCondition
       ]
-    })).toBe("(\n\tb == c ||\n\te == j\n)");
+    })).toBe(`(\n\t${processedCondition} ||\n\t${processedCondition}\n)`);
   });
 
   test("child condition groups", () => {
     expect(RenderConditionGroup({
       operator: "&&",
       conditions: [
-        "a == b",
+        rawCondition,
         {
           operator: "||",
           conditions: [
-            "a == b",
-            "f == c"
+            rawCondition,
+            rawCondition
           ]
         }
       ]
-    })).toEqual("(\n\ta == b &&\n\t(\n\t\ta == b ||\n\t\tf == c\n\t)\n)");
+    })).toEqual(`(\n\t${processedCondition} &&\n\t(\n\t\t${processedCondition} ||\n\t\t${processedCondition}\n\t)\n)`);
     
     expect(RenderConditionGroup({
       operator: "||",
       conditions: [
-        "a == b",
+        rawCondition,
         {
           operator: "&&",
           conditions: [
-            "a == b",
-            "f == c"
+            rawCondition,
+            rawCondition
           ]
         }
       ]
-    })).toEqual("(\n\ta == b ||\n\t(\n\t\ta == b &&\n\t\tf == c\n\t)\n)");
+    })).toEqual(`(\n\t${processedCondition} ||\n\t(\n\t\t${processedCondition} &&\n\t\t${processedCondition}\n\t)\n)`);
   });
 });

@@ -2,7 +2,7 @@ import Config from "../config/generic/MainConfig";
 import Walker from "../walker/Walker";
 import { FieldConfig } from "../config/generic/FieldConfigs";
 import ConditionGroup, { FieldId } from "../config/generic/ConditionsConfigs";
-// import { RenderFieldGroup } from "./ConditionsProcessor";
+import { RenderFieldGroup } from "./RenderCondition";
 
 type LogConfig = {
 	[path: string]: {
@@ -51,14 +51,14 @@ const NewProcessTypes = (globalConfig: Config): RenderedConfig => {
 
 		if (config.canCreate) {
 			Walker(config, config.canCreate, (fieldId: FieldId, fieldConfig: FieldConfig) => {
-				logConfig[path].create.conditions.push([fieldId, "keys", "hasAll", Object.keys(fieldConfig)]);
+				logConfig[path].create.conditions.push([["doc", fieldId], "keys", "hasAll", Object.keys(fieldConfig)]);
 			}, (fieldPath: FieldId, fieldConfig: FieldConfig) => {
 				// logConfig[path].create.conditions.push(...FieldRules(fieldPath, fieldConfig));
 			});
-			// if (config.canCreate.conditions)
-      //   logConfig[path].create.conditions.push(config.canCreate.conditions);
+			if (config.canCreate.conditions)
+        logConfig[path].create.conditions.push(...config.canCreate.conditions.conditions);
       
-      // renderedConfig[path].create = RenderFieldGroup(logConfig[path].create);
+      renderedConfig[path].create = RenderFieldGroup(logConfig[path].create);
     }
   });
   

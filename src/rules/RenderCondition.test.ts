@@ -1,4 +1,4 @@
-import { RenderFields } from "./ConditionsProcessor";
+import RenderFields from "./RenderCondition";
 
 describe("conditions.Boolean", () => {
   test("field", () => {

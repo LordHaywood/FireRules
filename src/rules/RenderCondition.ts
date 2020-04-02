@@ -2,7 +2,7 @@ import { SingleCondition } from "../config/generic/ConditionsConfigs";
 import RenderField from "../utils/RenderField";
 import RenderFieldList from "../utils/RenderFieldList";
 
-export const RenderFields = (cond: SingleCondition): string => {
+const RenderCondition = (cond: SingleCondition): string => {
   if (cond[0] == "doc" || cond[0] == "updateField" || cond[0] == "externalDoc")
     return RenderField(cond);
   switch (cond.length) {
@@ -52,3 +52,5 @@ export const RenderFields = (cond: SingleCondition): string => {
   }
   return "";
 };
+
+export default RenderCondition;

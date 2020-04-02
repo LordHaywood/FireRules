@@ -47,8 +47,8 @@ export type List =
 export type SingleCondition = Boolean | Timestamp | Number | String | LatLng | Map | List;
 
 export type ConditionGroup = {
-  operation: "&&"|"||",
-  conditions: SingleCondition[]
+  operator: "&&"|"||",
+  conditions: ConditionList
 };
 
-export default ConditionGroup;
+export type ConditionList = Array<SingleCondition | ConditionGroup>;
