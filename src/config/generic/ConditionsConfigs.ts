@@ -32,7 +32,7 @@ export type LatLng =
 
 export type Map = 
   [Field, "size", "=="|"!=="|"<"|">"|"<="|">=", number] |
-  [Field, "get", string, "=="|"!=="|"<"|">"|"<="|">=", number|string] |
+  [Field, "get", string|["param", string], "=="|"!=="|"<"|">"|"<="|">=", number|string] |
   [Field, "keys", "hasAll"|"hasAny"|"hasOnly", string[]] |
   [Field, "values", "hasAll"|"hasAny"|"hasOnly", (string|number)[]] |
   [Field, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];

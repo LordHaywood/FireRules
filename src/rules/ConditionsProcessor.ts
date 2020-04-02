@@ -1,33 +1,6 @@
-import ConditionGroup, { SingleCondition, ExternalDocFieldPath, Field, DocumentId, FieldId } from "../config/generic/ConditionsConfigs";
-
-export const RenderFieldList = (list: (number|string)[]): string => {
-  return `[${list.map(v => typeof v == "number" ? v : `"${v}"`).join(',')}]`;
-}
-
-export const RenderDocumentId = (path: DocumentId): string => {
-  return `/databases/$(database)/documents/${path.map(v => Array.isArray(v) ? `$(${v[1]})` : v).join("/")}`;
-}
-
-export const RenderFieldPath = (path: FieldId): string => {
-  return path.reduce((out: string, v): string => {
-    if (Array.isArray(v) && v[0] == "param")
-      out += `[${v[1]}]`;
-    else
-      out += `.${v}`;
-    return out;
-  }, "");
-}
-
-export const RenderField = (fieldPath: Field): string => {
-  switch (fieldPath[0]) {
-    case "doc":
-      return "resource.data" + RenderFieldPath(fieldPath[1]);
-    case "updateField":
-      return "request.resource.data" + RenderFieldPath(fieldPath[1]);
-    case "externalDoc":
-      return `get(${RenderDocumentId(fieldPath[1])}).data${RenderFieldPath(fieldPath[2])}`;
-  }
-};
+import { SingleCondition } from "../config/generic/ConditionsConfigs";
+import RenderField from "../utils/RenderField";
+import RenderFieldList from "../utils/RenderFieldList";
 
 export const RenderFields = (cond: SingleCondition): string => {
   if (cond[0] == "doc" || cond[0] == "updateField" || cond[0] == "externalDoc")
@@ -78,21 +51,4 @@ export const RenderFields = (cond: SingleCondition): string => {
         return `${RenderField(cond[0])}.${cond[1]}(${RenderField(["updateField", cond[0][1]])}).${cond[2]}().${cond[3]}(${RenderFieldList(cond[4])})`;
   }
   return "";
-};
-
-export const RenderFieldGroup = (group: ConditionGroup): string => {
-  switch (group.conditions.length) {
-    case 0:
-      return "true";
-    case 1:
-      if (!Array.isArray(group.conditions[0]))
-        return RenderFieldGroup(group.conditions[0]);
-      return RenderFields(group.conditions[0]);
-    default:
-      return "( " + group.conditions.map((cond: SingleCondition): string => {
-        if (!Array.isArray(cond))
-          return RenderFieldGroup(cond);
-        return RenderFields(cond);
-      }).join(` ${group.operation} `) + " )";
-  }
 };

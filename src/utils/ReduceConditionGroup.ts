@@ -17,9 +17,9 @@ const ReduceConditionGroup = (group: ConditionGroup): ConditionGroup =>
         else
           l.push(ReduceConditionGroup(v));
       }
-    
+
       return l;
     }, [])
   });
 
-export default RenderConditionGroup;
+export default ReduceConditionGroup;

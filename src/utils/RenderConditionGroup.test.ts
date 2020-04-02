@@ -5,12 +5,12 @@ describe("RenderConditionGroup", () => {
     expect(RenderConditionGroup({
       operator: "&&",
       conditions: []
-    })).toEqual("true");
+    })).toBe("true");
     
     expect(RenderConditionGroup({
       operator: "||",
       conditions: []
-    })).toEqual("true");
+    })).toBe("true");
   });
 
   test("single condition", () => {
@@ -19,14 +19,14 @@ describe("RenderConditionGroup", () => {
       conditions: [
         "a == b"
       ]
-    })).toEqual("a == b");
+    })).toBe("a == b");
     
     expect(RenderConditionGroup({
       operator: "||",
       conditions: [
         "b == c"
       ]
-    })).toEqual("b == c");
+    })).toBe("b == c");
   });
 
   test("multiple conditions", () => {
@@ -36,7 +36,7 @@ describe("RenderConditionGroup", () => {
         "a == b",
         "f == c"
       ]
-    })).toEqual("(\n  a == b ||\n f == c\n)");
+    })).toBe("(\n\ta == b &&\n\tf == c\n)");
     
     expect(RenderConditionGroup({
       operator: "||",
@@ -44,7 +44,7 @@ describe("RenderConditionGroup", () => {
         "b == c",
         "e == j"
       ]
-    })).toEqual("(\n  b == c ||\n e == j\n)");
+    })).toBe("(\n\tb == c ||\n\te == j\n)");
   });
 
   test("child condition groups", () => {
@@ -60,7 +60,7 @@ describe("RenderConditionGroup", () => {
           ]
         }
       ]
-    })).toEqual("(\n  a == b && (\n   a == b ||\n   f == c\n  )\n)");
+    })).toEqual("(\n\ta == b &&\n\t(\n\t\ta == b ||\n\t\tf == c\n\t)\n)");
     
     expect(RenderConditionGroup({
       operator: "||",
@@ -74,6 +74,6 @@ describe("RenderConditionGroup", () => {
           ]
         }
       ]
-    })).toEqual("(\n  a == b || (\n   a == b &&\n   f == c\n  )\n)");
+    })).toEqual("(\n\ta == b ||\n\t(\n\t\ta == b &&\n\t\tf == c\n\t)\n)");
   });
 });
