@@ -1,4 +1,4 @@
-import { ProcessFields } from '.';
+import { ProcessFields } from './Types';
 import { FieldsConfig } from '../config/generic/FieldConfigs';
 
 const testCases: {id: string, config: FieldsConfig, result: string}[] = [

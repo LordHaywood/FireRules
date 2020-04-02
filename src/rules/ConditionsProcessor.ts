@@ -1,14 +1,14 @@
-import ConditionGroup, { SingleCondition, FieldPath, ExternalDocFieldPath, Field, UpdateFieldPath } from "../config/generic/ConditionsConfigs";
+import ConditionGroup, { SingleCondition, ExternalDocFieldPath, Field, DocumentId, FieldId } from "../config/generic/ConditionsConfigs";
 
-export const RenderInteralFieldPath = (fieldPath: FieldPath): string => {
-  return "resource.data" + RenderFieldPath(fieldPath[1]);
+export const RenderFieldList = (list: (number|string)[]): string => {
+  return `[${list.map(v => typeof v == "number" ? v : `"${v}"`).join(',')}]`;
 }
 
-export const RenderInteralUpdateFieldPath = (fieldPath: UpdateFieldPath): string => {
-  return "request.resource.data" + RenderFieldPath(fieldPath[1]);
+export const RenderDocumentId = (path: DocumentId): string => {
+  return `/databases/$(database)/documents/${path.map(v => Array.isArray(v) ? `$(${v[1]})` : v).join("/")}`;
 }
 
-export const RenderFieldPath = (path: (string|["param", string])[]): string => {
+export const RenderFieldPath = (path: FieldId): string => {
   return path.reduce((out: string, v): string => {
     if (Array.isArray(v) && v[0] == "param")
       out += `[${v[1]}]`;
@@ -18,24 +18,19 @@ export const RenderFieldPath = (path: (string|["param", string])[]): string => {
   }, "");
 }
 
-export const RenderDocFieldPath = (docFieldPath: ExternalDocFieldPath): string => {
-  return `get(/databases/$(database)/documents/${docFieldPath[1].map(v => Array.isArray(v) && v[0] == "param" ? `$(${v[1]})`: v).join('/')}).data${RenderFieldPath(docFieldPath[2][1])}`;
-};
-
-export const RenderFieldList = (list: (number|string)[]): string => {
-  return `[${list.map(v => typeof v == "number" ? v : `"${v}"`).join(',')}]`;
-}
-
 export const RenderField = (fieldPath: Field): string => {
-  if (fieldPath[0] == "doc")
-    return RenderDocFieldPath(fieldPath);
-  if (fieldPath[0] == "updateField")
-    return RenderInteralUpdateFieldPath(fieldPath);
-  return RenderInteralFieldPath(fieldPath);
+  switch (fieldPath[0]) {
+    case "doc":
+      return "resource.data" + RenderFieldPath(fieldPath[1]);
+    case "updateField":
+      return "request.resource.data" + RenderFieldPath(fieldPath[1]);
+    case "externalDoc":
+      return `get(${RenderDocumentId(fieldPath[1])}).data${RenderFieldPath(fieldPath[2])}`;
+  }
 };
 
 export const RenderFields = (cond: SingleCondition): string => {
-  if (cond[0] == "field" || cond[0] == "updateField" || cond[0] == "doc")
+  if (cond[0] == "doc" || cond[0] == "updateField" || cond[0] == "externalDoc")
     return RenderField(cond);
   switch (cond.length) {
     case 2:

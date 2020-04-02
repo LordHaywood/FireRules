@@ -1,15 +1,20 @@
-type RenderedConfig = {
+type ProcessedRuleConditions = {
+  condition: "&&"|"||",
+  conditions: Array<string | ProcessedRuleConditions>
+};
+
+export type ProcessedRules = {
 	[path: string]: {
-		create?: string,
-		read?: string,
-		update?: string,
-		delete?: string
+		create?: ProcessedRuleConditions,
+		read?: ProcessedRuleConditions,
+		update?: ProcessedRuleConditions,
+		delete?: ProcessedRuleConditions
 	}
 };
 
 const Indent = (amount: number = 0) => `  `.repeat(amount);
 
-const RenderRules = (renderRules: RenderedConfig): string => {
+const RenderRules = (renderRules: ProcessedRules): string => {
   const docRules: string[] = Object.keys(renderRules).sort().reduce((output: string[], path: string) => {
     const pathConfig = renderRules[path];
     let pathOut: string = '';

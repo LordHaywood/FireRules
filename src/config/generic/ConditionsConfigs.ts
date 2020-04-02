@@ -4,10 +4,11 @@ export type DocumentId = Array<string|["param", string]>;
 export type NewFieldIdentifier<DataType> = ["data"|"prevData"|"postData", DataType, string] | ["externalDocData", string[], DataType, string];
 export type ParamIdentifier = ["param", string];
 
-export type ExternalDocFieldPath = ["doc", DocumentId, FieldId];
+export type DocFieldPath = ["doc", FieldId];
+export type ExternalDocFieldPath = ["externalDoc", DocumentId, FieldId];
 export type UpdateFieldPath = ["updateField", FieldId];
 
-export type Field = ExternalDocFieldPath | FieldId | UpdateFieldPath;
+export type Field = ExternalDocFieldPath | DocFieldPath | UpdateFieldPath;
 
 export type Boolean = 
 Field;

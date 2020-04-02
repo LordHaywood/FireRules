@@ -1,24 +1,24 @@
-import { RenderInteralFieldPath, RenderFieldPath, RenderInteralUpdateFieldPath, RenderFieldList, RenderDocFieldPath, RenderField, RenderFields, RenderFieldGroup } from "./ConditionsProcessor";
+import { RenderFieldPath, RenderFieldList, RenderField, RenderFields, RenderFieldGroup } from "./ConditionsProcessor";
 
-describe("RenderInteralFieldPath", () => {
-  test("without params", () => {
-    expect(RenderInteralFieldPath(["field", ["users", "userABC"]])).toBe(`resource.data.users.userABC`);
-  });
+// describe("RenderInteralFieldPath", () => {
+//   test("without params", () => {
+//     expect(RenderInteralFieldPath(["field", ["users", "userABC"]])).toBe(`resource.data.users.userABC`);
+//   });
 
-  test("with params", () => {
-    expect(RenderInteralFieldPath(["field", ["users", ["param", "uid"]]])).toBe(`resource.data.users[uid]`);
-  });
-});
+//   test("with params", () => {
+//     expect(RenderInteralFieldPath(["field", ["users", ["param", "uid"]]])).toBe(`resource.data.users[uid]`);
+//   });
+// });
 
-describe("RenderInteralUpdateFieldPath", () => {
-  test("without params", () => {
-    expect(RenderInteralUpdateFieldPath(["updateField", ["users", "userABC"]])).toBe(`request.resource.data.users.userABC`);
-  });
+// describe("RenderInteralUpdateFieldPath", () => {
+//   test("without params", () => {
+//     expect(RenderInteralUpdateFieldPath(["updateField", ["users", "userABC"]])).toBe(`request.resource.data.users.userABC`);
+//   });
 
-  test("with params", () => {
-    expect(RenderInteralUpdateFieldPath(["updateField", ["users", ["param", "uid"]]])).toBe(`request.resource.data.users[uid]`);
-  });
-});
+//   test("with params", () => {
+//     expect(RenderInteralUpdateFieldPath(["updateField", ["users", ["param", "uid"]]])).toBe(`request.resource.data.users[uid]`);
+//   });
+// });
 
 describe("RenderFieldPath", () => {
   test("without params", () => {
@@ -48,15 +48,15 @@ describe("RenderFieldList", () => {
   });
 });
 
-describe("RenderDocFieldPath", () => {
-  test("without params", () => {
-    expect(RenderDocFieldPath(["doc", ["users", "abc"], ["field", ["displayName"]]])).toBe(`get(/databases/$(database)/documents/users/abc).data.displayName`);
-  });
+// describe("RenderDocFieldPath", () => {
+//   test("without params", () => {
+//     expect(RenderDocFieldPath(["doc", ["users", "abc"], ["field", ["displayName"]]])).toBe(`get(/databases/$(database)/documents/users/abc).data.displayName`);
+//   });
 
-  test("with params", () => {
-    expect(RenderDocFieldPath(["doc", ["users", ["param", "uid"]], ["field", ["displayName"]]])).toBe(`get(/databases/$(database)/documents/users/$(uid)).data.displayName`);
-  });
-});
+//   test("with params", () => {
+//     expect(RenderDocFieldPath(["doc", ["users", ["param", "uid"]], ["field", ["displayName"]]])).toBe(`get(/databases/$(database)/documents/users/$(uid)).data.displayName`);
+//   });
+// });
 
 describe("RenderField", () => {
   describe("RenderDocFieldPath", () => {
@@ -67,7 +67,6 @@ describe("RenderField", () => {
     test("with params", () => {
       expect(RenderField(["doc", ["users", ["param", "uid"]], ["field", ["displayName"]]])).toBe(`get(/databases/$(database)/documents/users/$(uid)).data.displayName`);
     });
-
   });
   
   describe("RenderInteralFieldPath", () => {
