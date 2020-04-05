@@ -35,21 +35,32 @@ export type ObjectBaseConfig = {
 	fields: FieldsConfig
 };
 
+export type MapBaseConfig = {
+  type: "map",
+  key: ["param", string]
+	field: FieldConfig
+};
+
 export type ArrayBaseConfig = {
 	type: "array",
 	valueType: ArrayFieldConfig
 };
+
+export type BaseFieldConfig = StringBaseConfig | BooleanBaseConfig | NumberBaseConfig | TimestampBaseConfig | ObjectBaseConfig | ArrayBaseConfig;
 
 export type StringConfig = FieldConfigBase & StringBaseConfig;
 export type BooleanConfig = FieldConfigBase & BooleanBaseConfig;
 export type NumberConfig = FieldConfigBase & NumberBaseConfig;
 export type TimestampConfig = FieldConfigBase & TimestampBaseConfig;
 export type ObjectConfig = FieldConfigBase & ObjectBaseConfig;
+export type MapConfig = FieldConfigBase & MapBaseConfig;
 export type ArrayConfig = FieldConfigBase & ArrayBaseConfig;
 
-export type ArrayFieldConfig =  StringBaseConfig | BooleanBaseConfig | NumberBaseConfig | TimestampBaseConfig | ObjectBaseConfig;
-export type FieldConfig = StringConfig | BooleanConfig | ObjectConfig | NumberConfig | TimestampConfig | ArrayConfig;
+export type ArrayFieldConfig =  StringBaseConfig | BooleanBaseConfig | NumberBaseConfig | TimestampBaseConfig | ObjectBaseConfig | MapBaseConfig;
+export type FieldConfig = StringConfig | BooleanConfig | ObjectConfig | NumberConfig | TimestampConfig | ArrayConfig | MapConfig;
 
 export type FieldsConfig = {
 	[fieldId: string]: FieldConfig
 };
+
+export type DocumentFieldsConfig = ObjectConfig | MapConfig;

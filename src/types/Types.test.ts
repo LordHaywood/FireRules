@@ -1,7 +1,7 @@
-import { TreeStructure } from '../walker/TreeStructure';
-import { ProcessFields } from '.';
+import { ProcessFields } from './Types';
+import { FieldsConfig } from '../config/generic/FieldConfigs';
 
-const testCases: {id: string, config: TreeStructure, result: string}[] = [
+const testCases: {id: string, config: FieldsConfig, result: string}[] = [
 	{
 		id: "Test empty config",
 		config: {},
@@ -96,7 +96,7 @@ const testCases: {id: string, config: TreeStructure, result: string}[] = [
 		config: {
 			emptyObjectField: {
 				type: "object",
-				map: {},
+				fields: {},
 				required: true
 			},
 		},
@@ -111,7 +111,7 @@ const testCases: {id: string, config: TreeStructure, result: string}[] = [
 		config: {
 			emptyObjectField: {
 				type: "object",
-				map: {},
+				fields: {},
 				required: false
 			},
 		},
@@ -126,7 +126,7 @@ const testCases: {id: string, config: TreeStructure, result: string}[] = [
 		config: {
 			filledOjectField: {
 				type: "object",
-				map: {
+				fields: {
 					stringField: {
 						type: "string",
 						required: true
@@ -148,7 +148,7 @@ const testCases: {id: string, config: TreeStructure, result: string}[] = [
 		config: {
 			filledOjectField: {
 				type: "object",
-				map: {
+				fields: {
 					stringField: {
 						type: "string",
 						required: true
@@ -240,7 +240,7 @@ const testCases: {id: string, config: TreeStructure, result: string}[] = [
 				type: "array",
 				valueType: {
 					type: "object",
-					map: {
+					fields: {
 						test: {
 							type: "string",
 							required: true,

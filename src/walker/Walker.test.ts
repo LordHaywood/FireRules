@@ -1,16 +1,15 @@
-import Walker from './index';
+import Walker from './Walker';
 import { DocumentConfig } from '../config/generic/MainConfig';
 import { OnEventConfig } from '../config/generic/EventConfigs';
-import { TreeStructure, TreeElement, TreeArrayElement } from './TreeStructure';
-import { ArrayFieldConfig, FieldConfig, ArrayConfig, ObjectConfig, FieldsConfig } from '../config/generic/FieldConfigs';
+import { FieldConfig, ArrayConfig, ArrayFieldConfig } from '../config/generic/FieldConfigs';
+import { RulesInternalFieldId } from '../config/generic/ConditionsConfigs';
 
-const extractLevelsFromWalker = (documentConfig: DocumentConfig, onEventConfig: OnEventConfig): {level: number, path: string[], type: TreeStructure}[] => {
-  const output: {level: number, path: string[], type: TreeStructure}[] = [];
+const extractLevelsFromWalker = (documentConfig: DocumentConfig, onEventConfig: OnEventConfig): {fieldId: RulesInternalFieldId, type: FieldConfig}[] => {
+  const output: {fieldId: RulesInternalFieldId, type: FieldConfig}[] = [];
   
-  Walker(documentConfig, onEventConfig, (level: number, path: string[], type: TreeStructure) => {
+  Walker(documentConfig, onEventConfig, (fieldId: RulesInternalFieldId, type: FieldConfig) => {
     output.push({
-      level,
-      path,
+      fieldId,
       type
     });
   });
@@ -18,9 +17,11 @@ const extractLevelsFromWalker = (documentConfig: DocumentConfig, onEventConfig: 
   return output;
 }
 
+const basicTypes: ("string"|"boolean"|"number"|"timestamp")[] = ["string", "boolean", "number", "timestamp"];
+
 describe("Walker", () => {
   describe("onLevel", () => {
-    const basicTypes: ("string"|"boolean"|"number"|"timestamp")[] = ["string", "boolean", "number", "timestamp"];
+
     basicTypes.forEach(type => {
       describe(type, () => {
         [true, false].forEach(required => {
@@ -28,26 +29,55 @@ describe("Walker", () => {
             const documentConfig: DocumentConfig = {
               id: "docId",
               description: "abc",
-              fields: {
-                "field": {
-                  type: type,
-                  required: required
+              structure: {
+                type: "object",
+                fields: {
+                  "field": {
+                    type: type,
+                    required: required
+                  }
                 }
               }
             };
-            
-            const onEventConfig: OnEventConfig = {
-              fields: ["field"]
-            };
 
-            expect(extractLevelsFromWalker(documentConfig, onEventConfig)).toStrictEqual([
+            expect(extractLevelsFromWalker(documentConfig, {
+              fields: [
+                ["field"]
+              ]
+            })).toStrictEqual([]);
+
+            expect(extractLevelsFromWalker(documentConfig, {
+              fields: [[]]
+            })).toStrictEqual([
               {
-                level: 0,
-                path: [],
+                fieldId: [],
                 type: {
-                  "field": {
-                    type: type,
-                    required: required,
+                  type: "object",
+                  fields: {
+                    field: {
+                      required,
+                      type
+                    }
+                  }
+                }
+              }
+            ]);
+
+            expect(extractLevelsFromWalker(documentConfig, {
+              fields: [
+                [],
+                ["field"]
+              ]
+            })).toStrictEqual([
+              {
+                fieldId: [],
+                type: {
+                  type: "object",
+                  fields: {
+                    field: {
+                      required,
+                      type
+                    }
                   }
                 }
               }
@@ -57,10 +87,10 @@ describe("Walker", () => {
       });
     });
     
-    const objectTypes: {
+    const arrayTypes: {
       type: "array", 
       format: ArrayFieldConfig,
-      expected: TreeArrayElement
+      expected: ArrayFieldConfig
     }[] = [
       {
         type: "array", 
@@ -106,12 +136,12 @@ describe("Walker", () => {
         },
         expected: {
           type: "object",
-          map: {}
+          fields: {}
         }
       }
     ];
 
-    objectTypes.forEach(v => {
+    arrayTypes.forEach(v => {
       describe(v.type + " " + v.format.type, () => {
         [true, false].forEach(required => {
           test(required ? "Required" : "Optional", () => {
@@ -124,30 +154,27 @@ describe("Walker", () => {
             const documentConfig: DocumentConfig = {
               id: "docId",
               description: "abc",
-              fields: {
-                field: fieldConfig
+              structure: {
+                type: "object",
+                fields: {
+                  field: fieldConfig
+                }
               }
             };
-            
-            const onEventConfig: OnEventConfig = {
-              fields: ["field"]
-            };
 
-            expect(extractLevelsFromWalker(documentConfig, onEventConfig)).toStrictEqual([
+            expect(extractLevelsFromWalker(documentConfig, {
+              fields: [
+                []
+              ]
+            })).toStrictEqual([
               {
-                level: 0,
-                path: [],
+                fieldId: [],
                 type: {
-                  "field": v.type == "array" ? {
-                    required,
-                    type: "array",
-                    valueType: v.expected
-                  } : {
-                    required,
-                    type: "object",
-                    valueType: v.expected
+                  type: "object",
+                  fields: {
+                    field: fieldConfig
                   }
-                }
+                },
               }
             ]);
           });
@@ -155,6 +182,52 @@ describe("Walker", () => {
       });
     });
   });
-});
 
-// TODO: Add object tests
+  
+  describe("depth of objects", () => {
+    const documentConfig: DocumentConfig = {
+      id: "docId",
+      description: "abc",
+      structure: {
+        type: "object",
+        fields: {
+          child1: {
+            type: "object",
+            fields: {
+              child2: {
+                type: "object",
+                fields: {
+                  child3: {
+                    type: "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
+    expect(extractLevelsFromWalker(documentConfig, {
+      fields: [
+        []
+      ]
+    })).toStrictEqual([
+      {
+        fieldId: [],
+        type: documentConfig.structure
+      },
+      {
+        fieldId: ["child1"],
+        type: documentConfig.structure.type == "object" && documentConfig.structure.fields.child1
+      },
+      {
+        fieldId: ["child1", "child2"],
+        type: documentConfig.structure.type == "object" &&
+          documentConfig.structure.fields.child1 &&
+          documentConfig.structure.fields.child1.type == "object" &&
+          documentConfig.structure.fields.child1.fields.child2
+      }
+    ]);
+  });
+});

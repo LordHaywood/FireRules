@@ -1,11 +1,16 @@
+export type RulesExternalFieldId = (string|number)[];
+export type RulesInternalFieldId = (string|number|["param", string])[];
+export type RulesExternalDocumentId = string[];
+export type RulesInternalDocumentId = (string|["param", string])[];
+
 export type NewFieldIdentifier<DataType> = ["data"|"prevData"|"postData", DataType, string] | ["externalDocData", string[], DataType, string];
 export type ParamIdentifier = ["param", string];
 
-export type ExternalDocFieldPath = ["doc", (string|["param", string])[], FieldPath];
-export type FieldPath = ["field", (string|["param", string])[]];
-export type UpdateFieldPath = ["updateField", (string|["param", string])[]];
+export type DocFieldPath = ["doc", RulesInternalFieldId];
+export type ExternalDocFieldPath = ["externalDoc", RulesInternalDocumentId, RulesInternalFieldId];
+export type UpdateFieldPath = ["updateField", RulesInternalFieldId];
 
-export type Field = ExternalDocFieldPath | FieldPath | UpdateFieldPath;
+export type Field = ExternalDocFieldPath | DocFieldPath | UpdateFieldPath;
 
 export type Boolean = 
 Field;
@@ -32,7 +37,7 @@ export type Map =
   [Field, "get", string|["param", string], "=="|"!=="|"<"|">"|"<="|">=", number|string] |
   [Field, "keys", "hasAll"|"hasAny"|"hasOnly", string[]] |
   [Field, "values", "hasAll"|"hasAny"|"hasOnly", (string|number)[]] |
-  [FieldPath, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];
+  [Field, "diff", "addedKeys"|"effectedKeys"|"changedKeys"|"unchangedKeys", "hasAll"|"hasAny"|"hasOnly", string[]];
 
 export type List =
   [Field, "size", "=="|"!=="|"<"|">"|"<="|">=", number] |
@@ -44,8 +49,8 @@ export type List =
 export type SingleCondition = Boolean | Timestamp | Number | String | LatLng | Map | List;
 
 export type ConditionGroup = {
-  operation: "&&"|"||",
-  conditions: SingleCondition[]
+  operator: "&&"|"||",
+  conditions: ConditionList
 };
 
-export default ConditionGroup;
+export type ConditionList = (SingleCondition|ConditionGroup)[];
