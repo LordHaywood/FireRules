@@ -52,8 +52,6 @@ const NewProcessTypes = (globalConfig: Config): RenderedConfig => {
 		if (config.canCreate) {
 			Walker(config, config.canCreate, (fieldId: RulesInternalFieldId, fieldConfig: FieldConfig) => {
 				logConfig[path].create.conditions.push([["doc", fieldId], "keys", "hasAll", Object.keys(fieldConfig)]);
-			}, (fieldPath: RulesInternalFieldId, fieldConfig: FieldConfig) => {
-				// logConfig[path].create.conditions.push(...FieldRules(fieldPath, fieldConfig));
 			});
 			if (config.canCreate.conditions)
         logConfig[path].create.conditions.push(...config.canCreate.conditions.conditions);

@@ -1,5 +1,5 @@
-import { ProcessFields } from './Types';
 import { FieldsConfig } from '../config/generic/FieldConfigs';
+import ProcessObjectFields from './ProcessObjectFields';
 
 const testCases: {id: string, config: FieldsConfig, result: string}[] = [
 	{
@@ -281,13 +281,33 @@ const testCases: {id: string, config: FieldsConfig, result: string}[] = [
 			`	test: string`,
 			`}`
 		].join('\n')
+	},
+	{
+		id: "Test basic map config",
+		config: {
+			test: {
+        type: "map",
+        key: "id",
+        field: {
+          type: "string"
+        },
+				required: true,
+			}
+		},
+		result: [
+			`{`,
+      `\ttest: {`,
+      `\t\t[id: string]: string`,
+      `\t}`,
+			`}`
+		].join('\n')
 	}
 ];
 
 describe('Types', () => {
   testCases.forEach(testCase => {
     it(testCase.id, () => {
-      expect(ProcessFields(testCase.config)).toBe(testCase.result);
+      expect(ProcessObjectFields(testCase.config)).toBe(testCase.result);
     });
   })
 });

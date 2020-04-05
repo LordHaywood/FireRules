@@ -37,7 +37,7 @@ export type ObjectBaseConfig = {
 
 export type MapBaseConfig = {
   type: "map",
-  key: ["param", string]
+  key: string|["param", string]
 	field: FieldConfig
 };
 
