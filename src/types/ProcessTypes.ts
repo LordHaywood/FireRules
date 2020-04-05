@@ -5,7 +5,7 @@ import { FieldConfig } from "../config/generic/FieldConfigs";
 import Walker from "../walker/Walker";
 
 const ProccessTypes = (globalConfig: Config): FieldConfigMap =>
-	Object.values(globalConfig).reduce((typeStructure: {[id: string]: FieldConfig}, config: DocumentConfig) => {
+	Object.values(globalConfig).reduce((typeStructure: FieldConfigMap, config: DocumentConfig) => {
 		if (config.canCreate)
 			Walker(config, config.canCreate, (path: RulesInternalFieldId, fieldConfig: FieldConfig) => {
 				if (path.length == 0)
