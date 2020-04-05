@@ -1,24 +1,24 @@
 import Config, { DocumentConfig } from "../config/generic/MainConfig";
 import Walker from "../walker/Walker";
 import { FieldConfig, FieldsConfig } from "../config/generic/FieldConfigs";
-import { FieldId } from "../config/generic/ConditionsConfigs";
+import { RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
 
 type FieldConfigMap = Record<string, FieldConfig>;
 
 const ProccessTypes = (globalConfig: Config): FieldConfigMap =>
 	Object.values(globalConfig).reduce((typeStructure: {[id: string]: FieldConfig}, config: DocumentConfig) => {
 		if (config.canCreate)
-			Walker(config, config.canCreate, (path: FieldId, fieldConfig: FieldConfig) => {
+			Walker(config, config.canCreate, (path: RulesInternalFieldId, fieldConfig: FieldConfig) => {
 				if (path.length == 0)
 					typeStructure[`Create${config.id.replace(/ /g, '')}`] = fieldConfig;
 			});
 		if (config.canEdit)
-			Walker(config, config.canEdit, (path: FieldId, fieldConfig: FieldConfig) => {
+			Walker(config, config.canEdit, (path: RulesInternalFieldId, fieldConfig: FieldConfig) => {
 				if (path.length == 0)
 					typeStructure[`Edit${config.id.replace(/ /g, '')}`] = fieldConfig;
 			});
 		if (config.canRead)
-			Walker(config, config.canRead, (path: FieldId, fieldConfig: FieldConfig) => {
+			Walker(config, config.canRead, (path: RulesInternalFieldId, fieldConfig: FieldConfig) => {
 				if (path.length == 0)
 					typeStructure[`${config.id.replace(/ /g, '')}`] = fieldConfig;
 			});

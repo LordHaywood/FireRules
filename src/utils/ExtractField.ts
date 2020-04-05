@@ -1,26 +1,18 @@
-import { ValidPathStr, Path, ExtractPath } from "./FieldPath";
+import { RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
+import { DocumentFieldsConfig, FieldConfig } from "../config/generic/FieldConfigs";
+import { HasFieldId } from "./HasFieldId";
 
-export const HasPath = (obj: any, path: Path): boolean => {
-  for (let field of path) {
-    if ((typeof field == "string" && !obj[field]) || (typeof field == "number" && !(Array.isArray(obj) && obj[field])))
-      return false;
-    obj = obj[field];
-  }
-
-  return true
-};
-
-export const ExtractField = (obj: any, pathStr: string): any => {
-  if (!ValidPathStr(pathStr))
-    throw "Invalid Path";
-
-  const path: Path = ExtractPath(pathStr);
-
-  if (!HasPath(obj, path))
+export const ExtractField = (obj: DocumentFieldsConfig, fieldId: RulesInternalFieldId): FieldConfig => {
+  if (!HasFieldId(obj, fieldId))
     throw "Invalid path";
-  
-  for (let field of path)
-    obj = obj[field];
 
-  return obj;
+  return fieldId.reduce((config: FieldConfig, field) => {
+    if (typeof field == "string" && config.type == "object")
+      return config.fields[field];
+    if (config.type == "map")
+      return config.field;
+    if (config.type == "array")
+      return config.valueType;
+    return config;
+  }, obj);
 };

@@ -1,5 +1,5 @@
 import { CanCreate, CanRead, CanEdit, CanDelete } from "./EventConfigs";
-import { FieldsConfig } from "./FieldConfigs";
+import { DocumentFieldsConfig } from "./FieldConfigs";
 
 type Config = {
 	[docId: string]: DocumentConfig
@@ -8,7 +8,7 @@ type Config = {
 export type DocumentConfig = {
 	id: string,
 	description: string,
-	fields: FieldsConfig,
+	structure: DocumentFieldsConfig,
 	canCreate?: CanCreate,
 	canRead?: CanRead,
 	canEdit?: CanEdit,

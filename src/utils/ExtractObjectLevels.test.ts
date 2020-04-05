@@ -1,8 +1,12 @@
 import ExtractObjectLevels from "./ExtractObjectLevels";
+import { ExtractField } from "./ExtractField";
 
 describe("ExtractObjectLevels", () => {
   test("empty", () => {
-    expect(ExtractObjectLevels({})).toEqual([
+    expect(ExtractObjectLevels({
+      type: "object",
+      fields: {}
+    })).toEqual([
       {
         path: [],
         structure: {
@@ -21,8 +25,11 @@ describe("ExtractObjectLevels", () => {
 
   test("has simple fields", () => {
     expect(ExtractObjectLevels({
-      a: {
-        type: "number"
+      type: "object",
+      fields: {
+        a: {
+          type: "number"
+        }
       }
     })).toEqual([
       {
@@ -41,11 +48,14 @@ describe("ExtractObjectLevels", () => {
 
   test("has embedded object", () => {
     expect(ExtractObjectLevels({
-      a: {
-        type: "object",
-        fields: {
-          b: {
-            type: "number"
+      type: "object",
+      fields: {
+        a: {
+          type: "object",
+          fields: {
+            b: {
+              type: "number"
+            }
           }
         }
       }
@@ -82,13 +92,16 @@ describe("ExtractObjectLevels", () => {
 
   test("stops at arrays", () => {
     expect(ExtractObjectLevels({
-      a: {
-        type: "array",
-        valueType: {
-          type: "object",
-          fields: {
-            b: {
-              type: "number"
+      type: "object",
+      fields: {
+        a: {
+          type: "array",
+          valueType: {
+            type: "object",
+            fields: {
+              b: {
+                type: "number"
+              }
             }
           }
         }

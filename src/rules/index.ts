@@ -1,8 +1,8 @@
 import Config from "../config/generic/MainConfig";
 import Walker from "../walker/Walker";
 import { FieldConfig } from "../config/generic/FieldConfigs";
-import ConditionGroup, { FieldId } from "../config/generic/ConditionsConfigs";
-import { RenderFieldGroup } from "./RenderCondition";
+import { RulesExternalFieldId, ConditionGroup, RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
+import RenderConditionGroup from "../utils/RenderConditionGroup";
 
 type LogConfig = {
 	[path: string]: {
@@ -30,19 +30,19 @@ const NewProcessTypes = (globalConfig: Config): RenderedConfig => {
 	Object.keys(globalConfig).forEach(path => {
 		logConfig[path] = {
 			create: {
-				operation: "&&",
+				operator: "&&",
 				conditions: []	
 			},
 			read: {
-				operation: "&&",
+				operator: "&&",
 				conditions: []	
 			},
 			update: {
-				operation: "&&",
+				operator: "&&",
 				conditions: []	
 			},
 			delete: {
-				operation: "&&",
+				operator: "&&",
 				conditions: []	
 			}
 		};
@@ -50,15 +50,15 @@ const NewProcessTypes = (globalConfig: Config): RenderedConfig => {
     renderedConfig[path] = {};
 
 		if (config.canCreate) {
-			Walker(config, config.canCreate, (fieldId: FieldId, fieldConfig: FieldConfig) => {
+			Walker(config, config.canCreate, (fieldId: RulesInternalFieldId, fieldConfig: FieldConfig) => {
 				logConfig[path].create.conditions.push([["doc", fieldId], "keys", "hasAll", Object.keys(fieldConfig)]);
-			}, (fieldPath: FieldId, fieldConfig: FieldConfig) => {
+			}, (fieldPath: RulesInternalFieldId, fieldConfig: FieldConfig) => {
 				// logConfig[path].create.conditions.push(...FieldRules(fieldPath, fieldConfig));
 			});
 			if (config.canCreate.conditions)
         logConfig[path].create.conditions.push(...config.canCreate.conditions.conditions);
       
-      renderedConfig[path].create = RenderFieldGroup(logConfig[path].create);
+      renderedConfig[path].create = RenderConditionGroup(logConfig[path].create);
     }
   });
   

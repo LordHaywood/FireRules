@@ -1,12 +1,14 @@
-export type FieldId = Array<string|number|["param", string]>;
-export type DocumentId = Array<string|["param", string]>;
+export type RulesExternalFieldId = (string|number)[];
+export type RulesInternalFieldId = (string|number|["param", string])[];
+export type RulesExternalDocumentId = string[];
+export type RulesInternalDocumentId = (string|["param", string])[];
 
 export type NewFieldIdentifier<DataType> = ["data"|"prevData"|"postData", DataType, string] | ["externalDocData", string[], DataType, string];
 export type ParamIdentifier = ["param", string];
 
-export type DocFieldPath = ["doc", FieldId];
-export type ExternalDocFieldPath = ["externalDoc", DocumentId, FieldId];
-export type UpdateFieldPath = ["updateField", FieldId];
+export type DocFieldPath = ["doc", RulesInternalFieldId];
+export type ExternalDocFieldPath = ["externalDoc", RulesInternalDocumentId, RulesInternalFieldId];
+export type UpdateFieldPath = ["updateField", RulesInternalFieldId];
 
 export type Field = ExternalDocFieldPath | DocFieldPath | UpdateFieldPath;
 
@@ -51,4 +53,4 @@ export type ConditionGroup = {
   conditions: ConditionList
 };
 
-export type ConditionList = Array<SingleCondition | ConditionGroup>;
+export type ConditionList = (SingleCondition|ConditionGroup)[];

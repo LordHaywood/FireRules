@@ -1,35 +1,35 @@
-import Conditions from './ConditionsConfigs'; 
+import { ConditionGroup, RulesInternalFieldId } from './ConditionsConfigs'; 
 
 export type OnEventConfig = {
-	fields?: string[],
+	fields?: RulesInternalFieldId[],
 	params?: string[],
 	requireAuth?: boolean,
-	conditions?: Conditions
+	conditions?: ConditionGroup
 }
 
 export type CanCreate = {
-	fields: string[],
+	fields: RulesInternalFieldId[],
 	params?: string[],
 	requireAuth?: boolean,
-	conditions?: Conditions
+	conditions?: ConditionGroup
 };
 
 export type CanRead = {
-	fields: string[],
+	fields: RulesInternalFieldId[],
 	params: string[],
 	requireAuth?: boolean,
-	conditions?: Conditions
+	conditions?: ConditionGroup
 };
 
 export type CanEdit = {
-	fields: string[],
+	fields: RulesInternalFieldId[],
 	params: string[],
 	requireAuth?: boolean,
-	conditions?: Conditions
+	conditions?: ConditionGroup
 };
 
 export type CanDelete = {
 	params: string[],
 	requireAuth?: boolean,
-	conditions?: Conditions
+	conditions?: ConditionGroup
 };
