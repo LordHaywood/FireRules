@@ -1,6 +1,6 @@
-import { DocumentId } from "../config/generic/ConditionsConfigs";
+import { RulesInternalDocumentId } from "../config/generic/ConditionsConfigs";
 
-const RenderDocumentId = (path: DocumentId): string => {
+const RenderDocumentId = (path: RulesInternalDocumentId): string => {
   if (path.length == 0 || path.length % 2 == 1)
     throw "Invalid Document Id"
 

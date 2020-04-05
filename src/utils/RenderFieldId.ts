@@ -1,6 +1,6 @@
-import { FieldId } from "../config/generic/ConditionsConfigs";
+import { RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
 
-const RenderFieldId = (path: FieldId): string =>
+const RenderFieldId = (path: RulesInternalFieldId): string =>
   path.reduce((out: string, v) => {
     if (Array.isArray(v) && v[0] == "param")
       out += `[${v[1]}]`;
