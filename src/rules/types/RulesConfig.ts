@@ -2,7 +2,7 @@ import { ConditionGroup } from "../../config/generic/ConditionsConfigs"
 import SpecifcFieldStructure from "../../config/generic/SpecifcFieldStructure"
 
 type BaseConfig = {
-  additionalConditions: ConditionGroup
+  additionalConditions?: ConditionGroup
 }
 
 type ReadOperation = BaseConfig & {

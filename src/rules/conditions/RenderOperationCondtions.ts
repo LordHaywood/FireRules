@@ -1,5 +1,5 @@
-import { Operation } from './types/RulesConfig';
-import { ConditionGroup } from '../config/generic/ConditionsConfigs';
+import { Operation } from '../types/RulesConfig';
+import { ConditionGroup } from '../../config/generic/ConditionsConfigs';
 import RenderConditionGroup from './RenderConditionGroup';
 
 const RenderOperationCondtions = (config: Operation, indent: number = 2): string => {

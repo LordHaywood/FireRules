@@ -1,6 +1,6 @@
-import { SingleCondition } from "../config/generic/ConditionsConfigs";
-import RenderField from "../utils/RenderField";
-import RenderFieldList from "../utils/RenderFieldList";
+import { SingleCondition } from "../../config/generic/ConditionsConfigs";
+import RenderField from "../../utils/RenderField";
+import RenderFieldList from "../../utils/RenderFieldList";
 
 const RenderCondition = (cond: SingleCondition): string => {
   if (cond[0] == "doc" || cond[0] == "updateField" || cond[0] == "externalDoc")
