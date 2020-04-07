@@ -1,8 +1,8 @@
 import Walker from './Walker';
-import { DocumentConfig } from '../config/generic/FireRulesConfig';
 import { OnEventConfig } from '../config/generic/EventConfigs';
 import { FieldConfig, ArrayConfig, ArrayFieldConfig } from '../config/generic/FieldConfigs';
 import { RulesInternalFieldId } from '../config/generic/ConditionsConfigs';
+import DocumentConfig from '../config/generic/DocumentConfig';
 
 const extractLevelsFromWalker = (documentConfig: DocumentConfig, onEventConfig: OnEventConfig): {fieldId: RulesInternalFieldId, type: FieldConfig}[] => {
   const output: {fieldId: RulesInternalFieldId, type: FieldConfig}[] = [];
@@ -29,6 +29,7 @@ describe("Walker", () => {
             const documentConfig: DocumentConfig = {
               id: "docId",
               description: "abc",
+              rules: {},
               structure: {
                 type: "object",
                 fields: {
@@ -154,6 +155,7 @@ describe("Walker", () => {
             const documentConfig: DocumentConfig = {
               id: "docId",
               description: "abc",
+              rules: {},
               structure: {
                 type: "object",
                 fields: {
@@ -188,6 +190,7 @@ describe("Walker", () => {
     const documentConfig: DocumentConfig = {
       id: "docId",
       description: "abc",
+      rules: {},
       structure: {
         type: "object",
         fields: {
