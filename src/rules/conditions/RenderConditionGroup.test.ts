@@ -1,5 +1,5 @@
 import RenderConditionGroup from "./RenderConditionGroup";
-import { SingleCondition } from "../config/generic/ConditionsConfigs";
+import { SingleCondition } from "../../config/generic/ConditionsConfigs";
 
 const rawCondition: SingleCondition = ["doc", ["abc"]];
 const processedCondition: string = "resource.data.abc";

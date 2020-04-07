@@ -1,4 +1,4 @@
-import { ConditionGroup, ConditionList } from "../config/generic/ConditionsConfigs";
+import { ConditionGroup, ConditionList } from "../../config/generic/ConditionsConfigs";
 
 const ReduceConditionGroup = <T>(group: ConditionGroup): ConditionGroup =>
   ({

@@ -1,4 +1,4 @@
-import Config, { DocumentConfig } from "../generic/MainConfig";
+import Config, { DocumentConfig } from "../generic/FireRulesConfig";
 import VerifyPath from "./VerifyPath";
 import VerifyFields from "./VerifyFields";
 

@@ -1,9 +1,9 @@
-import { DocumentConfig } from "../config/generic/MainConfig";
 import { OnEventConfig } from "../config/generic/EventConfigs";
 import { FieldConfig } from "../config/generic/FieldConfigs";
 import ExtractObjectLevels from "../utils/ExtractObjectLevels";
 import { ExtractField } from "../utils/ExtractField";
 import { RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
+import DocumentConfig from "../config/generic/DocumentConfig";
 
 const ProcessLevels = (
   fieldConfig: FieldConfig,
