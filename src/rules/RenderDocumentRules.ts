@@ -9,7 +9,7 @@ const RenderDocumentRules = (documentId: RulesInternalDocumentId, config: Docume
     `${Indent(indent)}match ${RenderRulesDocumentId(documentId)} {`,
     RenderOperations(config, indent + 1),
     `${Indent(indent)}}`
-  ].join('\n');
+  ].join('\n\n');
 };
 
 export default RenderDocumentRules;

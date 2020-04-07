@@ -10,7 +10,7 @@ describe("RenderDocumentRules", () => {
         type: "object",
         fields: {}
       }
-    })).toBe(`match /users/specifcUID {\n\n}`);
+    })).toBe(`match /users/specifcUID {\n\n\n\n}`);
   });
 
   test("has param", () => {
@@ -22,7 +22,7 @@ describe("RenderDocumentRules", () => {
         type: "object",
         fields: {}
       }
-    })).toBe(`match /users/{uid} {\n\n}`);
+    })).toBe(`match /users/{uid} {\n\n\n\n}`);
   });
 
   test("indent works", () => {
@@ -34,7 +34,7 @@ describe("RenderDocumentRules", () => {
         type: "object",
         fields: {}
       }
-    }, 1)).toBe(`\tmatch /users/specifcUID {\n\n\t}`);
+    }, 1)).toBe(`\tmatch /users/specifcUID {\n\n\n\n\t}`);
   });
 
   test("requires auth", () => {
@@ -50,7 +50,7 @@ describe("RenderDocumentRules", () => {
         type: "object",
         fields: {}
       }
-    })).toBe(`match /users/specifcUID {\n\tallow read: if request.auth.uid != null;\n}`);
+    })).toBe(`match /users/specifcUID {\n\n\tallow read: if request.auth.uid != null;\n\n}`);
   });
 
   test("requires auth", () => {
@@ -72,6 +72,6 @@ describe("RenderDocumentRules", () => {
         type: "object",
         fields: {}
       }
-    })).toBe(`match /users/specifcUID {\n\tallow read: if (\n\t\trequest.auth.uid != null &&\n\t\tresource.data.fieldId == "abc"\n\t);\n}`);
+    })).toBe(`match /users/specifcUID {\n\n\tallow read: if (\n\t\trequest.auth.uid != null &&\n\t\tresource.data.fieldId == "abc"\n\t);\n\n}`);
   });
 });
