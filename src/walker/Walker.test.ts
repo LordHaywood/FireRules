@@ -1,5 +1,5 @@
 import Walker from './Walker';
-import { DocumentConfig } from '../config/generic/MainConfig';
+import { DocumentConfig } from '../config/generic/FireRulesConfig';
 import { OnEventConfig } from '../config/generic/EventConfigs';
 import { FieldConfig, ArrayConfig, ArrayFieldConfig } from '../config/generic/FieldConfigs';
 import { RulesInternalFieldId } from '../config/generic/ConditionsConfigs';

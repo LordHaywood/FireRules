@@ -518,3 +518,9 @@ describe("List", () => {
     expect(RenderFields([["updateField", ["map", "id"]], "hasOnly", [0, 1, "abc", "efg"]])).toBe(`request.resource.data.map.id.set().hasOnly([0,1,"abc","efg"])`);
   });
 });
+
+describe("conditions.Utils", () => {
+  test("requiresAuth", () => {
+    expect(RenderFields(["requiresAuth"])).toBe(`request.auth.uid != null`);
+  });
+});

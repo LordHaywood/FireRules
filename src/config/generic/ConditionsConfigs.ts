@@ -46,7 +46,11 @@ export type List =
   [Field, "hasAny", (string|number)[]] |
   [Field, "hasOnly", (string|number)[]];
 
-export type SingleCondition = Boolean | Timestamp | Number | String | LatLng | Map | List;
+  
+export type Utils = 
+  ["requiresAuth"];
+
+export type SingleCondition = Boolean | Timestamp | Number | String | LatLng | Map | List | Utils;
 
 export type ConditionGroup = {
   operator: "&&"|"||",

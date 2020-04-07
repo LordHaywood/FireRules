@@ -6,6 +6,8 @@ const RenderCondition = (cond: SingleCondition): string => {
   if (cond[0] == "doc" || cond[0] == "updateField" || cond[0] == "externalDoc")
     return RenderField(cond);
   switch (cond.length) {
+    case 1:
+      return `request.auth.uid != null`;
     case 2:
       if (cond[1] == "isFloat")
         return `float(${RenderField(cond[0])}) === ${RenderField(cond[0])}`;

@@ -1,8 +1,8 @@
-import Config from "../config/generic/MainConfig";
+import Config from "../config/generic/FireRulesConfig";
 import Walker from "../walker/Walker";
 import { FieldConfig } from "../config/generic/FieldConfigs";
-import { RulesExternalFieldId, ConditionGroup, RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
-import RenderConditionGroup from "../utils/RenderConditionGroup";
+import { ConditionGroup, RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
+import RenderConditionGroup from "./RenderConditionGroup";
 
 type LogConfig = {
 	[path: string]: {

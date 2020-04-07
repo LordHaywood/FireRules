@@ -1,4 +1,4 @@
-import Config, { DocumentConfig } from "../config/generic/MainConfig";
+import Config, { DocumentConfig } from "../config/generic/FireRulesConfig";
 import FieldConfigMap from "./FieldConfigMap";
 import { RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
 import { FieldConfig } from "../config/generic/FieldConfigs";

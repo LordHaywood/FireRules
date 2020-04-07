@@ -1,4 +1,4 @@
-import { DocumentConfig } from "../config/generic/MainConfig";
+import { DocumentConfig } from "../config/generic/FireRulesConfig";
 import { OnEventConfig } from "../config/generic/EventConfigs";
 import { FieldConfig } from "../config/generic/FieldConfigs";
 import ExtractObjectLevels from "../utils/ExtractObjectLevels";

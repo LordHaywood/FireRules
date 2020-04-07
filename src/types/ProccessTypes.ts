@@ -1,4 +1,4 @@
-import Config from "../config/generic/MainConfig";
+import Config from "../config/generic/FireRulesConfig";
 import FieldConfigMap from "./FieldConfigMap";
 import ProcessField from "./ProcessField";
 import ProccessTypes from "./ProcessTypes";
