@@ -43,7 +43,9 @@ describe("RenderOperationCondtions", () => {
           [["doc", ["field", "id"]], "!==", "346"]
         ]
       }
-    }, 0)).toBe(`(\n\tresource.data.field.id == "abc" &&\n\tresource.data.field.id !== "346"\n)`);
+    }, {
+      indent: 0
+    })).toBe(`(\n\tresource.data.field.id == "abc" &&\n\tresource.data.field.id !== "346"\n)`);
   });
 
   test("&& condition with auth", () => {
@@ -56,7 +58,9 @@ describe("RenderOperationCondtions", () => {
           [["doc", ["field", "id"]], "!==", "346"]
         ]
       }
-    }, 0)).toBe(`(\n\trequest.auth.uid != null &&\n\tresource.data.field.id == "abc" &&\n\tresource.data.field.id !== "346"\n)`);
+    }, {
+      indent: 0
+    })).toBe(`(\n\trequest.auth.uid != null &&\n\tresource.data.field.id == "abc" &&\n\tresource.data.field.id !== "346"\n)`);
   });
 
   test("&& condition with auth", () => {
@@ -69,7 +73,9 @@ describe("RenderOperationCondtions", () => {
           [["doc", ["field", "id"]], "!==", "346"]
         ]
       }
-    }, 0)).toBe(`(\n\trequest.auth.uid != null &&\n\t(\n\t\tresource.data.field.id == "abc" ||\n\t\tresource.data.field.id !== "346"\n\t)\n)`);
+    }, {
+      indent: 0
+    })).toBe(`(\n\trequest.auth.uid != null &&\n\t(\n\t\tresource.data.field.id == "abc" ||\n\t\tresource.data.field.id !== "346"\n\t)\n)`);
   });
 
   test("sub conditions group", () => {
@@ -88,7 +94,9 @@ describe("RenderOperationCondtions", () => {
           }
         ]
       }
-    }, 0)).toBe(`(\n\tresource.data.field.id == "abc" &&\n\t(\n\t\tresource.data.field.id == "abc" ||\n\t\tresource.data.field.id !== "346"\n\t)\n)`);
+    }, {
+      indent: 0
+    })).toBe(`(\n\tresource.data.field.id == "abc" &&\n\t(\n\t\tresource.data.field.id == "abc" ||\n\t\tresource.data.field.id !== "346"\n\t)\n)`);
   });
 
   test("reduces group", () => {
@@ -107,6 +115,8 @@ describe("RenderOperationCondtions", () => {
           }
         ]
       }
-    }, 0)).toBe(`(\n\tresource.data.field.id == "abc" &&\n\tresource.data.field.id == "edf" &&\n\tresource.data.field.id !== "346"\n)`);
+    }, {
+      indent: 0
+    })).toBe(`(\n\tresource.data.field.id == "abc" &&\n\tresource.data.field.id == "edf" &&\n\tresource.data.field.id !== "346"\n)`);
   });
 });

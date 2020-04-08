@@ -2,6 +2,8 @@ import { SingleCondition } from "../../config/generic/ConditionsConfigs";
 import RenderField from "../../utils/RenderField";
 import RenderFieldList from "../../utils/RenderFieldList";
 
+// TODO: Add is[Number|Map|List] to tests
+
 const RenderCondition = (cond: SingleCondition): string => {
   if (cond[0] == "doc" || cond[0] == "updateField" || cond[0] == "externalDoc")
     return RenderField(cond);
@@ -9,6 +11,22 @@ const RenderCondition = (cond: SingleCondition): string => {
     case 1:
       return `request.auth.uid != null`;
     case 2:
+      if (cond[1] == "isObject")
+        return `${RenderField(cond[0])} is object`;
+      if (cond[1] == "isBoolean")
+        return `${RenderField(cond[0])} is boolean`;
+      if (cond[1] == "isTimestamp")
+        return `${RenderField(cond[0])} is timestamp`;
+      if (cond[1] == "isNumber")
+        return `${RenderField(cond[0])} is number`;
+      if (cond[1] == "isMap")
+        return `${RenderField(cond[0])} is map`;
+      if (cond[1] == "isLatLng")
+        return `${RenderField(cond[0])} is LatLng`;
+      if (cond[1] == "isString")
+        return `${RenderField(cond[0])} is string`;
+      if (cond[1] == "isList")
+        return `${RenderField(cond[0])} is list`;
       if (cond[1] == "isFloat")
         return `float(${RenderField(cond[0])}) === ${RenderField(cond[0])}`;
       if (cond[1] == "isInteger")

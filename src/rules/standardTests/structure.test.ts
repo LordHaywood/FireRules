@@ -60,7 +60,7 @@ describe("RenderRules.structure", () => {
       ``,
       `\t\tmatch /cities/{city} {\n`,
       `\t\t\tallow read: if true;`,
-      `\t\t\tallow write: if true;\n`,
+      `\t\t\tallow write: if resource.data is object;\n`,
       `\t\t}`,
       `\t}`,
       `}`
