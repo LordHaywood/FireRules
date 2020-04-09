@@ -1,8 +1,8 @@
-import { Operation } from '../types/RulesConfig';
+import { Operation } from '../../rules/types/RulesConfig';
 import { ConditionGroup } from '../../config/generic/ConditionsConfigs';
 import RenderConditionGroup from './RenderConditionGroup';
 import DocumentConfig from '../../config/generic/DocumentConfig';
-import StructureConditions from '../StructureConditions';
+import StructureConditions from '../../rules/StructureConditions';
 
 const RenderOperationCondtions = (
   config: Operation,

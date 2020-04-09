@@ -1,6 +1,6 @@
 import { SingleCondition } from "../../config/generic/ConditionsConfigs";
-import RenderField from "../../utils/RenderField";
-import RenderFieldList from "../../utils/RenderFieldList";
+import RenderField from "../RenderField";
+import RenderFieldList from "../RenderFieldList";
 
 // TODO: Add is[Number|Map|List] to tests
 

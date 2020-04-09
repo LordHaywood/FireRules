@@ -1,6 +1,6 @@
 import DocumentConfig from "../config/generic/DocumentConfig";
 import RulesConfig from "./types/RulesConfig";
-import RenderOperationCondtions from "./conditions/RenderOperationCondtions";
+import RenderOperationCondtions from "../utils/conditions/RenderOperationCondtions";
 import Indent from "../utils/Indent";
 
 type OperationInfo = {type: string, condtions: string}

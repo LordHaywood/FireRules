@@ -1,6 +1,6 @@
 import { ConditionGroup, RulesInternalFieldId } from "../config/generic/ConditionsConfigs";
 import { DocumentFieldsConfig, FieldConfig } from "../config/generic/FieldConfigs";
-import ReduceConditionGroup from "./conditions/ReduceConditionGroup";
+import ReduceConditionGroup from "../utils/conditions/ReduceConditionGroup";
 
 const StructureConditionsCycle = (structure: DocumentFieldsConfig|FieldConfig, path: RulesInternalFieldId): ConditionGroup => {
   const conditionsGroup: ConditionGroup = {

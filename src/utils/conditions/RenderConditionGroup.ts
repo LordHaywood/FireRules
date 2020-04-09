@@ -1,7 +1,7 @@
 import ReduceConditionGroup from "./ReduceConditionGroup";
 import { ConditionGroup } from "../../config/generic/ConditionsConfigs";
 import RenderCondition from "./RenderCondition";
-import Indent from "../../utils/Indent";
+import Indent from "../Indent";
 
 const RenderConditionGroup = (group: ConditionGroup, indent: number = 0, reduce: boolean = true): string => {
   if (reduce)
